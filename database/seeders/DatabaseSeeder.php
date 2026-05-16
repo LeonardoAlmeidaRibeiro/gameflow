@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             'cpf' => '12345678900',
             'email' => 'test@example.com',
             'password' => Hash::make('password'),
+            'photo' => null,
+            'phone' => null,
         ]);
     }
 }

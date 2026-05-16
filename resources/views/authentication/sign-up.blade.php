@@ -36,22 +36,10 @@ License: For each use you must have a valid license purchased only from above li
 <body id="kt_body" class="app-blank app-blank bgi-size-cover bgi-position-center bgi-no-repeat">
     <!--begin::Theme mode setup on page load-->
     <script>
-        var defaultThemeMode = "light";
-        var themeMode;
         if (document.documentElement) {
-            if (document.documentElement.hasAttribute("data-theme-mode")) {
-                themeMode = document.documentElement.getAttribute("data-theme-mode");
-            } else {
-                if (localStorage.getItem("data-theme") !== null) {
-                    themeMode = localStorage.getItem("data-theme");
-                } else {
-                    themeMode = defaultThemeMode;
-                }
-            }
-            if (themeMode === "system") {
-                themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-            }
-            document.documentElement.setAttribute("data-theme", themeMode);
+            localStorage.removeItem("data-theme");
+            document.documentElement.setAttribute("data-theme", "light");
+            document.documentElement.removeAttribute("data-theme-mode");
         }
     </script>
     <!--end::Theme mode setup on page load-->
@@ -62,11 +50,6 @@ License: For each use you must have a valid license purchased only from above li
             body {
                 background-image: url('{{ asset('assets/media/auth/bg4.jpg') }}');
             }
-
-            [data-theme="dark"] body {
-                background-image: url('{{ asset('assets/media/auth/bg4-dark.jpg') }}');
-            }
-
             .social-auth-btn {
                 border: 1px solid #e1e3ea !important;
             }

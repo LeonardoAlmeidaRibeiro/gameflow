@@ -320,7 +320,7 @@
 												</span>
 												<!--end::Svg Icon-->
 											</span>
-											<span class="menu-title">User Profile</span>
+											<span class="menu-title">Perfil de usuário</span>
 											<span class="menu-arrow"></span>
 										</span>
 										<!--end:Menu link-->
@@ -329,11 +329,11 @@
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/pages/user-profile/overview.html">
+												<a class="menu-link" href="{{route('account.show')}}">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">Overview</span>
+													<span class="menu-title">Meus Dados</span>
 												</a>
 												<!--end:Menu link-->
 											</div>
@@ -418,7 +418,7 @@
 												</span>
 												<!--end::Svg Icon-->
 											</span>
-											<span class="menu-title">Account</span>
+											<span class="menu-title">Conta</span>
 											<span class="menu-arrow"></span>
 										</span>
 										<!--end:Menu link-->
@@ -427,11 +427,11 @@
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/account/overview.html">
+												<a class="menu-link" href="{{route('account.show')}}">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">Overview</span>
+													<span class="menu-title">Meus Dados</span>
 												</a>
 												<!--end:Menu link-->
 											</div>
@@ -1044,7 +1044,7 @@
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">Account Deactivation</span>
+													<span class="menu-title">Desativar Conta</span>
 												</a>
 												<!--end:Menu link-->
 											</div>
@@ -1904,7 +1904,7 @@
 															<span class="menu-bullet">
 																<span class="bullet bullet-dot"></span>
 															</span>
-															<span class="menu-title">Create Account</span>
+															<span class="menu-title">Criar Conta</span>
 														</a>
 														<!--end:Menu link-->
 													</div>
@@ -2582,11 +2582,11 @@
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/apps/support-center/overview.html">
+												<a class="menu-link" href="{{route('account.show')}}">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">Overview</span>
+													<span class="menu-title">Meus Dados</span>
 												</a>
 												<!--end:Menu link-->
 											</div>

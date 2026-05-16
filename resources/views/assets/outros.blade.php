@@ -3345,7 +3345,7 @@
 										<div class="ms-6">
 											<!--begin::Name-->
 											<a href="#" class="d-flex align-items-center fs-5 fw-bold text-dark text-hover-primary">Neil Owen
-											<span class="badge badge-light fs-8 fw-semibold ms-2">Account Manager</span></a>
+											<span class="badge badge-light fs-8 fw-semibold ms-2">Gerenciar Conta</span></a>
 											<!--end::Name-->
 											<!--begin::Email-->
 											<div class="fw-semibold text-muted">owen.neil@gmail.com</div>

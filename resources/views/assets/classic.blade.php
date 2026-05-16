@@ -41,7 +41,7 @@ License: For each use you must have a valid license purchased only from above li
 	<!--begin::Body-->
 	<body id="kt_app_body" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true" data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true" data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
 		<!--begin::Theme mode setup on page load-->
-		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-theme-mode")) { themeMode = document.documentElement.getAttribute("data-theme-mode"); } else { if ( localStorage.getItem("data-theme") !== null ) { themeMode = localStorage.getItem("data-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-theme", themeMode); }</script>
+		<script>if (document.documentElement) { localStorage.removeItem("data-theme"); document.documentElement.setAttribute("data-theme", "light"); document.documentElement.removeAttribute("data-theme-mode"); }</script>
 		<!--end::Theme mode setup on page load-->
 		<!--begin::App-->
 		<div class="d-flex flex-column flex-root app-root" id="kt_app_root">
@@ -473,13 +473,13 @@ License: For each use you must have a valid license purchased only from above li
 																	<!--begin:Col-->
 																	<div class="col-lg-3 mb-6 mb-lg-0">
 																		<!--begin:Menu heading-->
-																		<h4 class="fs-6 fs-lg-4 fw-bold mb-3 ms-4">User Profile</h4>
+																		<h4 class="fs-6 fs-lg-4 fw-bold mb-3 ms-4">Perfil de usuário</h4>
 																		<!--end:Menu heading-->
 																		<!--begin:Menu item-->
 																		<div class="menu-item p-0 m-0">
 																			<!--begin:Menu link-->
-																			<a href="../../demo1/dist/pages/user-profile/overview.html" class="menu-link">
-																				<span class="menu-title">Overview</span>
+																			<a href="{{route('account.show')}}" class="menu-link">
+																				<span class="menu-title">Meus Dados</span>
 																			</a>
 																			<!--end:Menu link-->
 																		</div>
@@ -764,8 +764,8 @@ License: For each use you must have a valid license purchased only from above li
 																		<!--begin:Menu item-->
 																		<div class="menu-item p-0 m-0">
 																			<!--begin:Menu link-->
-																			<a href="../../demo1/dist/account/overview.html" class="menu-link">
-																				<span class="menu-title">Overview</span>
+																			<a href="{{route('account.show')}}" class="menu-link">
+																				<span class="menu-title">Meus Dados</span>
 																			</a>
 																			<!--end:Menu link-->
 																		</div>
@@ -2124,11 +2124,11 @@ License: For each use you must have a valid license purchased only from above li
 													<!--begin:Menu item-->
 													<div class="menu-item">
 														<!--begin:Menu link-->
-														<a class="menu-link" href="../../demo1/dist/apps/support-center/overview.html">
+														<a class="menu-link" href="{{route('account.show')}}">
 															<span class="menu-bullet">
 																<span class="bullet bullet-dot"></span>
 															</span>
-															<span class="menu-title">Overview</span>
+															<span class="menu-title">Meus Dados</span>
 														</a>
 														<!--end:Menu link-->
 													</div>
@@ -4694,7 +4694,7 @@ License: For each use you must have a valid license purchased only from above li
 										<!--end::Menu separator-->
 										<!--begin::Menu item-->
 										<div class="menu-item px-5">
-											<a href="../../demo1/dist/account/overview.html" class="menu-link px-5">My Profile</a>
+											<a href="../../{{route('account.show')}}" class="menu-link px-5">My Profile</a>
 										</div>
 										<!--end::Menu item-->
 										<!--begin::Menu item-->
@@ -5177,7 +5177,7 @@ License: For each use you must have a valid license purchased only from above li
 												</span>
 												<!--end::Svg Icon-->
 											</span>
-											<span class="menu-title">User Profile</span>
+											<span class="menu-title">Perfil de usuário</span>
 											<span class="menu-arrow"></span>
 										</span>
 										<!--end:Menu link-->
@@ -5186,11 +5186,11 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/pages/user-profile/overview.html">
+												<a class="menu-link" href="{{route('account.show')}}">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">Overview</span>
+													<span class="menu-title">Meus Dados</span>
 												</a>
 												<!--end:Menu link-->
 											</div>
@@ -5284,11 +5284,11 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/account/overview.html">
+												<a class="menu-link" href="{{route('account.show')}}">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">Overview</span>
+													<span class="menu-title">Meus Dados</span>
 												</a>
 												<!--end:Menu link-->
 											</div>
@@ -7439,11 +7439,11 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/apps/support-center/overview.html">
+												<a class="menu-link" href="{{route('account.show')}}">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">Overview</span>
+													<span class="menu-title">Meus Dados</span>
 												</a>
 												<!--end:Menu link-->
 											</div>
@@ -8894,7 +8894,7 @@ License: For each use you must have a valid license purchased only from above li
 														<span class="me-2">Try our all new Enviroment with
 														<br />
 														<span class="position-relative d-inline-block text-danger">
-															<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-danger opacity-75-hover">Pro Plan</a>
+															<a href="{{route('account.show')}}" class="text-danger opacity-75-hover">Pro Plan</a>
 															<!--begin::Separator-->
 															<span class="position-absolute opacity-15 bottom-0 start-0 border-4 border-danger border-bottom w-100"></span>
 															<!--end::Separator-->
@@ -9395,7 +9395,7 @@ License: For each use you must have a valid license purchased only from above li
 																						<img src="{{ asset('assets/media/avatars/300-3.jpg') }}" class="" alt="" />
 																					</div>
 																					<div class="d-flex justify-content-start flex-column">
-																						<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Guy Hawkins</a>
+																						<a href="{{route('account.show')}}" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Guy Hawkins</a>
 																						<span class="text-gray-400 fw-semibold d-block fs-7">Haiti</span>
 																					</div>
 																				</div>
@@ -9426,7 +9426,7 @@ License: For each use you must have a valid license purchased only from above li
 																						<img src="{{ asset('assets/media/avatars/300-2.jpg') }}" class="" alt="" />
 																					</div>
 																					<div class="d-flex justify-content-start flex-column">
-																						<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jane Cooper</a>
+																						<a href="{{route('account.show')}}" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jane Cooper</a>
 																						<span class="text-gray-400 fw-semibold d-block fs-7">Monaco</span>
 																					</div>
 																				</div>
@@ -9457,7 +9457,7 @@ License: For each use you must have a valid license purchased only from above li
 																						<img src="{{ asset('assets/media/avatars/300-9.jpg') }}" class="" alt="" />
 																					</div>
 																					<div class="d-flex justify-content-start flex-column">
-																						<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jacob Jones</a>
+																						<a href="{{route('account.show')}}" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jacob Jones</a>
 																						<span class="text-gray-400 fw-semibold d-block fs-7">Poland</span>
 																					</div>
 																				</div>
@@ -9488,7 +9488,7 @@ License: For each use you must have a valid license purchased only from above li
 																						<img src="{{ asset('assets/media/avatars/300-7.jpg') }}" class="" alt="" />
 																					</div>
 																					<div class="d-flex justify-content-start flex-column">
-																						<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Cody Fishers</a>
+																						<a href="{{route('account.show')}}" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Cody Fishers</a>
 																						<span class="text-gray-400 fw-semibold d-block fs-7">Mexico</span>
 																					</div>
 																				</div>
@@ -9545,7 +9545,7 @@ License: For each use you must have a valid license purchased only from above li
 																						<img src="{{ asset('assets/media/avatars/300-25.jpg') }}" class="" alt="" />
 																					</div>
 																					<div class="d-flex justify-content-start flex-column">
-																						<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Brooklyn Simmons</a>
+																						<a href="{{route('account.show')}}" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Brooklyn Simmons</a>
 																						<span class="text-gray-400 fw-semibold d-block fs-7">Poland</span>
 																					</div>
 																				</div>
@@ -9576,7 +9576,7 @@ License: For each use you must have a valid license purchased only from above li
 																						<img src="{{ asset('assets/media/avatars/300-24.jpg') }}" class="" alt="" />
 																					</div>
 																					<div class="d-flex justify-content-start flex-column">
-																						<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Esther Howard</a>
+																						<a href="{{route('account.show')}}" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Esther Howard</a>
 																						<span class="text-gray-400 fw-semibold d-block fs-7">Mexico</span>
 																					</div>
 																				</div>
@@ -9607,7 +9607,7 @@ License: For each use you must have a valid license purchased only from above li
 																						<img src="{{ asset('assets/media/avatars/300-20.jpg') }}" class="" alt="" />
 																					</div>
 																					<div class="d-flex justify-content-start flex-column">
-																						<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Annette Black</a>
+																						<a href="{{route('account.show')}}" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Annette Black</a>
 																						<span class="text-gray-400 fw-semibold d-block fs-7">Haiti</span>
 																					</div>
 																				</div>
@@ -9638,7 +9638,7 @@ License: For each use you must have a valid license purchased only from above li
 																						<img src="{{ asset('assets/media/avatars/300-17.jpg') }}" class="" alt="" />
 																					</div>
 																					<div class="d-flex justify-content-start flex-column">
-																						<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Marvin McKinney</a>
+																						<a href="{{route('account.show')}}" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Marvin McKinney</a>
 																						<span class="text-gray-400 fw-semibold d-block fs-7">Monaco</span>
 																					</div>
 																				</div>
@@ -9695,7 +9695,7 @@ License: For each use you must have a valid license purchased only from above li
 																						<img src="{{ asset('assets/media/avatars/300-11.jpg') }}" class="" alt="" />
 																					</div>
 																					<div class="d-flex justify-content-start flex-column">
-																						<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jacob Jones</a>
+																						<a href="{{route('account.show')}}" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jacob Jones</a>
 																						<span class="text-gray-400 fw-semibold d-block fs-7">New York</span>
 																					</div>
 																				</div>
@@ -9726,7 +9726,7 @@ License: For each use you must have a valid license purchased only from above li
 																						<img src="{{ asset('assets/media/avatars/300-23.jpg') }}" class="" alt="" />
 																					</div>
 																					<div class="d-flex justify-content-start flex-column">
-																						<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Ronald Richards</a>
+																						<a href="{{route('account.show')}}" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Ronald Richards</a>
 																						<span class="text-gray-400 fw-semibold d-block fs-7">Madrid</span>
 																					</div>
 																				</div>
@@ -9757,7 +9757,7 @@ License: For each use you must have a valid license purchased only from above li
 																						<img src="{{ asset('assets/media/avatars/300-4.jpg') }}" class="" alt="" />
 																					</div>
 																					<div class="d-flex justify-content-start flex-column">
-																						<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Leslie Alexander</a>
+																						<a href="{{route('account.show')}}" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Leslie Alexander</a>
 																						<span class="text-gray-400 fw-semibold d-block fs-7">Pune</span>
 																					</div>
 																				</div>
@@ -9788,7 +9788,7 @@ License: For each use you must have a valid license purchased only from above li
 																						<img src="{{ asset('assets/media/avatars/300-1.jpg') }}" class="" alt="" />
 																					</div>
 																					<div class="d-flex justify-content-start flex-column">
-																						<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Courtney Henry</a>
+																						<a href="{{route('account.show')}}" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Courtney Henry</a>
 																						<span class="text-gray-400 fw-semibold d-block fs-7">Mexico</span>
 																					</div>
 																				</div>
@@ -9845,7 +9845,7 @@ License: For each use you must have a valid license purchased only from above li
 																						<img src="{{ asset('assets/media/avatars/300-12.jpg') }}" class="" alt="" />
 																					</div>
 																					<div class="d-flex justify-content-start flex-column">
-																						<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Arlene McCoy</a>
+																						<a href="{{route('account.show')}}" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Arlene McCoy</a>
 																						<span class="text-gray-400 fw-semibold d-block fs-7">London</span>
 																					</div>
 																				</div>
@@ -9876,7 +9876,7 @@ License: For each use you must have a valid license purchased only from above li
 																						<img src="{{ asset('assets/media/avatars/300-21.jpg') }}" class="" alt="" />
 																					</div>
 																					<div class="d-flex justify-content-start flex-column">
-																						<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Marvin McKinneyr</a>
+																						<a href="{{route('account.show')}}" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Marvin McKinneyr</a>
 																						<span class="text-gray-400 fw-semibold d-block fs-7">Monaco</span>
 																					</div>
 																				</div>
@@ -9907,7 +9907,7 @@ License: For each use you must have a valid license purchased only from above li
 																						<img src="{{ asset('assets/media/avatars/300-30.jpg') }}" class="" alt="" />
 																					</div>
 																					<div class="d-flex justify-content-start flex-column">
-																						<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jacob Jones</a>
+																						<a href="{{route('account.show')}}" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jacob Jones</a>
 																						<span class="text-gray-400 fw-semibold d-block fs-7">PManila</span>
 																					</div>
 																				</div>
@@ -9938,7 +9938,7 @@ License: For each use you must have a valid license purchased only from above li
 																						<img src="{{ asset('assets/media/avatars/300-14.jpg') }}" class="" alt="" />
 																					</div>
 																					<div class="d-flex justify-content-start flex-column">
-																						<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Esther Howard</a>
+																						<a href="{{route('account.show')}}" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Esther Howard</a>
 																						<span class="text-gray-400 fw-semibold d-block fs-7">Iceland</span>
 																					</div>
 																				</div>
@@ -9995,7 +9995,7 @@ License: For each use you must have a valid license purchased only from above li
 																						<img src="{{ asset('assets/media/avatars/300-6.jpg') }}" class="" alt="" />
 																					</div>
 																					<div class="d-flex justify-content-start flex-column">
-																						<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jane Cooper</a>
+																						<a href="{{route('account.show')}}" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jane Cooper</a>
 																						<span class="text-gray-400 fw-semibold d-block fs-7">Haiti</span>
 																					</div>
 																				</div>
@@ -10026,7 +10026,7 @@ License: For each use you must have a valid license purchased only from above li
 																						<img src="{{ asset('assets/media/avatars/300-10.jpg') }}" class="" alt="" />
 																					</div>
 																					<div class="d-flex justify-content-start flex-column">
-																						<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Esther Howard</a>
+																						<a href="{{route('account.show')}}" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Esther Howard</a>
 																						<span class="text-gray-400 fw-semibold d-block fs-7">Kiribati</span>
 																					</div>
 																				</div>
@@ -10057,7 +10057,7 @@ License: For each use you must have a valid license purchased only from above li
 																						<img src="{{ asset('assets/media/avatars/300-9.jpg') }}" class="" alt="" />
 																					</div>
 																					<div class="d-flex justify-content-start flex-column">
-																						<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jacob Jones</a>
+																						<a href="{{route('account.show')}}" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jacob Jones</a>
 																						<span class="text-gray-400 fw-semibold d-block fs-7">Poland</span>
 																					</div>
 																				</div>
@@ -10088,7 +10088,7 @@ License: For each use you must have a valid license purchased only from above li
 																						<img src="{{ asset('assets/media/avatars/300-3.jpg') }}" class="" alt="" />
 																					</div>
 																					<div class="d-flex justify-content-start flex-column">
-																						<a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Ralph Edwards</a>
+																						<a href="{{route('account.show')}}" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Ralph Edwards</a>
 																						<span class="text-gray-400 fw-semibold d-block fs-7">Mexico</span>
 																					</div>
 																				</div>
@@ -10177,7 +10177,7 @@ License: For each use you must have a valid license purchased only from above li
 																			<!--begin::Info-->
 																			<div class="m-0">
 																				<span class="fw-semibold text-gray-400 d-block fs-8">Manager</span>
-																				<a href="../../demo1/dist/pages/user-profile/overview.html" class="fw-bold text-gray-800 text-hover-primary fs-7">Robert Fox</a>
+																				<a href="{{route('account.show')}}" class="fw-bold text-gray-800 text-hover-primary fs-7">Robert Fox</a>
 																			</div>
 																			<!--end::Info-->
 																		</div>

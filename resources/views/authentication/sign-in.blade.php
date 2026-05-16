@@ -29,7 +29,7 @@
 	<!--begin::Body-->
 	<body id="kt_body" class="app-blank app-blank bgi-size-cover bgi-position-center bgi-no-repeat">
 		<!--begin::Theme mode setup on page load-->
-		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-theme-mode")) { themeMode = document.documentElement.getAttribute("data-theme-mode"); } else { if ( localStorage.getItem("data-theme") !== null ) { themeMode = localStorage.getItem("data-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-theme", themeMode); }</script>
+		<script>if (document.documentElement) { localStorage.removeItem("data-theme"); document.documentElement.setAttribute("data-theme", "light"); document.documentElement.removeAttribute("data-theme-mode"); }</script>
 		<!--end::Theme mode setup on page load-->
 		<!--begin::Root-->
 		<div class="d-flex flex-column flex-root" id="kt_app_root">
@@ -37,10 +37,6 @@
 			<style>
 				body {
 					background-image: url('{{ asset('assets/media/auth/bg4.jpg') }}');
-				}
-
-				[data-theme="dark"] body {
-					background-image: url('{{ asset('assets/media/auth/bg4-dark.jpg') }}');
 				}
 			</style>
 			<!--end::Page bg image-->

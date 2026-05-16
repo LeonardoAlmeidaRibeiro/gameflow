@@ -462,3 +462,198 @@
         display: none;
     }
 }
+			.gameflow-brand {
+				align-items: center;
+				display: inline-flex;
+				gap: 0.75rem;
+				text-decoration: none;
+			}
+
+			.gameflow-brand-mark {
+				align-items: center;
+				background: linear-gradient(135deg, #f1416c 0%, #009ef7 100%);
+				border-radius: 0.65rem;
+				color: #ffffff;
+				display: inline-flex;
+				flex: 0 0 42px;
+				font-size: 1.25rem;
+				font-weight: 800;
+				height: 42px;
+				justify-content: center;
+				letter-spacing: 0;
+				width: 42px;
+			}
+
+			.gameflow-brand-name {
+				color: #ffffff;
+				font-size: 1.35rem;
+				font-weight: 800;
+				letter-spacing: 0;
+				line-height: 1;
+			}
+
+			.gameflow-mobile-brand .gameflow-brand-mark {
+				flex-basis: 34px;
+				font-size: 1rem;
+				height: 34px;
+				width: 34px;
+			}
+
+			.gameflow-mobile-brand .gameflow-brand-name {
+				color: #181c32;
+				font-size: 1.1rem;
+			}
+
+			.gameflow-brand .app-sidebar-logo-minimize {
+				display: none;
+			}
+
+			@media (min-width: 992px) {
+				:root {
+					--gf-sidebar-width: 265px;
+					--gf-header-height: 70px;
+				}
+
+				body.app-default {
+					background: #f5f8fa;
+				}
+
+				#kt_app_page {
+					min-height: 100vh;
+				}
+
+				#kt_app_sidebar {
+					background: #1e1e2d;
+					bottom: 0;
+					display: flex !important;
+					flex-direction: column;
+					left: 0;
+					position: fixed;
+					top: 0;
+					width: var(--gf-sidebar-width);
+					z-index: 105;
+				}
+
+				#kt_app_sidebar_logo {
+					align-items: center;
+					border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+					display: flex;
+					height: var(--gf-header-height);
+				}
+
+				#kt_app_sidebar .menu-heading {
+					color: #646477;
+				}
+
+				#kt_app_sidebar .menu-link {
+					border-radius: 0.475rem;
+				}
+
+				#kt_app_sidebar .menu-link .menu-title,
+				#kt_app_sidebar .menu-link .menu-arrow,
+				#kt_app_sidebar .menu-link .menu-bullet,
+				#kt_app_sidebar .menu-link .menu-icon {
+					color: #a2a3b7;
+				}
+
+				#kt_app_sidebar .menu-link.active,
+				#kt_app_sidebar .menu-link:hover,
+				#kt_app_sidebar .menu-item.here > .menu-link,
+				#kt_app_sidebar .menu-item.show > .menu-link {
+					background: #2a2a3c;
+				}
+
+				#kt_app_sidebar .menu-link.active .menu-title,
+				#kt_app_sidebar .menu-link:hover .menu-title,
+				#kt_app_sidebar .menu-item.here > .menu-link .menu-title,
+				#kt_app_sidebar .menu-item.show > .menu-link .menu-title {
+					color: #ffffff;
+				}
+
+				#kt_app_sidebar_footer {
+					margin-top: auto;
+				}
+
+				#kt_app_header {
+					background: #ffffff;
+					box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+					height: var(--gf-header-height);
+					left: var(--gf-sidebar-width);
+					position: fixed;
+					right: 0;
+					top: 0;
+					z-index: 100;
+				}
+
+				#kt_app_header_container {
+					height: 100%;
+					max-width: none;
+					padding-left: 2rem;
+					padding-right: 2rem;
+				}
+
+				#kt_app_header_wrapper {
+					align-items: stretch;
+					display: flex !important;
+					justify-content: space-between;
+					min-width: 0;
+					width: 100%;
+				}
+
+				#kt_app_header .app-header-menu {
+					align-items: stretch;
+					display: flex !important;
+					flex: 1 1 auto;
+					min-width: 0;
+				}
+
+				#kt_app_header_menu {
+					align-items: stretch !important;
+					display: flex !important;
+					flex-direction: row !important;
+				}
+
+				#kt_app_header_menu > .menu-item > .menu-link {
+					align-items: center;
+					display: flex;
+					height: 100%;
+					padding-left: 1rem;
+					padding-right: 1rem;
+				}
+
+				#kt_app_header .app-navbar {
+					align-items: center !important;
+					display: flex !important;
+					flex-direction: row !important;
+					gap: 0.35rem;
+					justify-content: flex-end;
+					margin-left: auto;
+					white-space: nowrap;
+				}
+
+				#kt_app_wrapper {
+					display: flex;
+					margin-left: var(--gf-sidebar-width);
+					min-height: 100vh;
+					padding-top: var(--gf-header-height);
+				}
+
+				#kt_app_main {
+					min-width: 0;
+					width: 100%;
+				}
+
+				#kt_app_toolbar,
+				#kt_app_content,
+				#kt_app_footer {
+					width: 100%;
+				}
+
+				#kt_app_toolbar_container,
+				#kt_app_content_container,
+				#kt_app_footer .app-container {
+					max-width: none;
+					padding-left: 2rem;
+					padding-right: 2rem;
+				}
+			}
