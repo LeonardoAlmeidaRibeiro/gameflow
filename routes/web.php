@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\FinanceController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -23,4 +25,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/account', [AccountController::class, 'show'])->name('account.show');
     Route::get('/account/photo', [AccountController::class, 'photo'])->name('account.photo');
     Route::put('/account', [AccountController::class, 'update'])->name('account.update');
+
+    Route::get('/finance', [FinanceController::class, 'index'])->name('finance.index');
+    Route::post('/finance', [FinanceController::class, 'store'])->name('finance.store');
+    Route::put('/finance/{finance}', [FinanceController::class, 'update'])->name('finance.update');
+    Route::delete('/finance/{finance}', [FinanceController::class, 'destroy'])->name('finance.destroy');
 });

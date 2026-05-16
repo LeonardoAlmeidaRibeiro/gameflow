@@ -303,82 +303,24 @@
                             <!--begin::Content container-->
                             <div id="kt_app_content_container" class="app-container container-xxl">
                                 @if (session('status'))
-                                    <div class="alert alert-success d-flex align-items-center p-5 mb-8">
-                                        <div class="d-flex flex-column">
-                                            <span>{{ session('status') }}</span>
-                                        </div>
+                                <div class="alert alert-success d-flex align-items-center p-5 mb-8">
+                                    <div class="d-flex flex-column">
+                                        <span>{{ session('status') }}</span>
                                     </div>
+                                </div>
                                 @endif
 
                                 @if ($errors->any())
-                                    <div class="alert alert-danger d-flex align-items-center p-5 mb-8">
-                                        <div class="d-flex flex-column">
-                                            <span>Confira os campos destacados e tente novamente.</span>
-                                        </div>
+                                <div class="alert alert-danger d-flex align-items-center p-5 mb-8">
+                                    <div class="d-flex flex-column">
+                                        <span>Confira os campos destacados e tente novamente.</span>
                                     </div>
+                                </div>
                                 @endif
                                 <!--begin::Navbar-->
                                 <div class="card mb-5 mb-xl-10">
                                     <div class="card-body pt-9 pb-0">
-                                        <!--begin::Details-->
-                                        <div class="d-flex flex-wrap flex-sm-nowrap mb-8">
-                                            <!--begin: Pic-->
-                                            <div class="me-7 mb-4">
-                                                <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
-                                                    <img src="{{ $profilePhoto }}" alt="Foto do perfil" />
-                                                    <div class="position-absolute translate-middle bottom-0 start-100 mb-6 bg-success rounded-circle border border-4 border-body h-20px w-20px"></div>
-                                                </div>
-                                            </div>
-                                            <!--end::Pic-->
-                                            <!--begin::Info-->
-                                            <div class="flex-grow-1">
-                                                <div class="d-flex justify-content-between align-items-start flex-wrap mb-4">
-                                                    <div class="d-flex flex-column">
-                                                        <div class="d-flex align-items-center mb-2 flex-wrap">
-                                                            <a href="#" class="text-gray-900 text-hover-primary fs-2 fw-bold me-2">{{ data_get($profileUser, 'name', 'Usuário') }}</a>
-                                                            <span class="badge badge-light-primary fw-bold fs-8 px-3 py-2 me-2">Nivel {{ $gameLevel }}</span>
-                                                            <span class="badge badge-light-success fw-bold fs-8 px-3 py-2">Plano Pro</span>
-                                                        </div>
-                                                        <div class="fs-5 fw-semibold text-muted mb-3">Estrategista do Foco</div>
-                                                        <div class="d-flex flex-wrap fw-semibold fs-6 pe-2">
-                                                            <span class="d-flex align-items-center text-gray-600 me-5 mb-2">Campanha ativa: {{ $activeCampaign }}</span>
-                                                        </div>
-                                                    </div>
-                                                    <a href="#" class="btn btn-sm btn-light-primary align-self-center" data-bs-toggle="modal" data-bs-target="#modal_editar">Editar perfil</a>
-                                                </div>
-
-                                                <div class="mb-6">
-                                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                                        <span class="fw-bold text-gray-800">XP para o proximo nivel</span>
-                                                        <span class="fw-semibold text-muted">{{ number_format($currentXp, 0, ',', '.') }} / {{ number_format($nextLevelXp, 0, ',', '.') }} XP</span>
-                                                    </div>
-                                                    <div class="h-8px bg-light rounded">
-                                                        <div class="bg-primary rounded h-8px" role="progressbar" style="width: {{ $xpPercent }}%;" aria-valuenow="{{ $xpPercent }}" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="d-flex flex-wrap">
-                                                    <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-4 mb-3">
-                                                        <div class="fs-2 fw-bold text-gray-900">{{ $streakDays }}</div>
-                                                        <div class="fw-semibold fs-6 text-muted">dias seguidos</div>
-                                                    </div>
-                                                    <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-4 mb-3">
-                                                        <div class="fs-2 fw-bold text-gray-900">{{ $completedMissions }}</div>
-                                                        <div class="fw-semibold fs-6 text-muted">missões concluídas</div>
-                                                    </div>
-                                                    <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-4 mb-3">
-                                                        <div class="fs-2 fw-bold text-gray-900">72</div>
-                                                        <div class="fw-semibold fs-6 text-muted">foco</div>
-                                                    </div>
-                                                    <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 mb-3">
-                                                        <div class="fs-2 fw-bold text-gray-900">65</div>
-                                                        <div class="fw-semibold fs-6 text-muted">disciplina</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--end::Info-->
-                                        </div>
-                                        <!--end::Details-->
+                                  		 @include('assets.header')
                                         <!--begin::Navs-->
                                         @include('assets.nav')
                                         <!--begin::Navs-->
@@ -558,15 +500,16 @@
 
     @include('account.settings')
     @if ($errors->any())
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                var modalElement = document.getElementById('modal_editar');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var modalElement = document.getElementById('modal_editar');
 
-                if (modalElement && window.bootstrap) {
-                    new bootstrap.Modal(modalElement).show();
-                }
-            });
-        </script>
+            if (modalElement && window.bootstrap) {
+                new bootstrap.Modal(modalElement).show();
+            }
+        });
+
+    </script>
     @endif
 
 </body>

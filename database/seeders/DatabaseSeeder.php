@@ -23,5 +23,9 @@ class DatabaseSeeder extends Seeder
             'photo' => null,
             'phone' => null,
         ]);
+
+        $this->call([
+            CategoriaSeeder::class,
+        ]);
     }
 }
