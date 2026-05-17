@@ -47,6 +47,18 @@ return new class extends Migration
             // Forma de pagamento
             $table->string('forma_pagamento')->nullable();
 
+            // Recorrencia
+            $table->boolean('recorrente')->default(false);
+            $table->string('recorrencia_tipo')->nullable();
+            $table->enum('recorrencia_valor_tipo', ['fixo', 'variavel'])
+                ->nullable();
+            $table->unsignedSmallInteger('recorrencia_intervalo')->default(1);
+            $table->date('recorrencia_ate')->nullable();
+            $table->foreignId('recorrencia_origem_id')
+                ->nullable()
+                ->constrained('finance')
+                ->onDelete('set null');
+
             // Observações
             $table->text('observacoes')->nullable();
 

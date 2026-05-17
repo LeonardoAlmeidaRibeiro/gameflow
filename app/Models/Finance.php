@@ -24,6 +24,12 @@ class Finance extends Model
         'data_vencimento',
         'data_pagamento',
         'forma_pagamento',
+        'recorrente',
+        'recorrencia_tipo',
+        'recorrencia_valor_tipo',
+        'recorrencia_intervalo',
+        'recorrencia_ate',
+        'recorrencia_origem_id',
         'observacoes',
     ];
 
@@ -31,6 +37,8 @@ class Finance extends Model
         'valor' => 'decimal:2',
         'data_vencimento' => 'date',
         'data_pagamento' => 'date',
+        'recorrente' => 'boolean',
+        'recorrencia_ate' => 'date',
     ];
 
     public function user()
@@ -41,5 +49,15 @@ class Finance extends Model
     public function categoria()
     {
         return $this->belongsTo(Categoria::class, 'categoria_id');
+    }
+
+    public function recorrenciaOrigem()
+    {
+        return $this->belongsTo(Finance::class, 'recorrencia_origem_id');
+    }
+
+    public function recorrenciasGeradas()
+    {
+        return $this->hasMany(Finance::class, 'recorrencia_origem_id');
     }
 }

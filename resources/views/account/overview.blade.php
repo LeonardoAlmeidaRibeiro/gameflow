@@ -467,7 +467,7 @@
                     </div>
                     <!--end::Content wrapper-->
                     <!--begin::Footer-->
-                    @include('assets.footer')
+                {{--    @include('assets.footer')--}}
                     <!--end::Footer-->
                 </div>
                 <!--end:::Main-->

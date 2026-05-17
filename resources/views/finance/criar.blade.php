@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal_adicionar_financeiro" tabindex="-1" aria-hidden="true">
+﻿<div class="modal fade" id="modal_adicionar_financeiro" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <form method="POST" action="{{ route('finance.store') }}">
@@ -98,6 +98,41 @@
                         </div>
 
                         <div class="col-md-6">
+                            <label class="form-label">Recorrência</label>
+                            <div class="form-control form-control-solid d-flex align-items-center min-h-44px">
+                                <input type="hidden" name="recorrente" value="0" />
+                                <div class="form-check form-switch form-check-custom form-check-solid m-0">
+                                    <input class="form-check-input" type="checkbox" name="recorrente" value="1" id="recorrente_adicionar" @checked(old('recorrente')) />
+                                    <label class="form-check-label" for="recorrente_adicionar">
+                                        Repetir mensalmente
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 finance-recorrencia-opcao d-none">
+                            <label class="form-label">Tipo de valor</label>
+                            <select name="recorrencia_valor_tipo" class="form-select form-select-solid @error('recorrencia_valor_tipo') is-invalid @enderror">
+                                <option value="fixo" @selected(old('recorrencia_valor_tipo', 'fixo') === 'fixo')>Fixo</option>
+                                <option value="variavel" @selected(old('recorrencia_valor_tipo') === 'variavel')>Variável / estimado</option>
+                            </select>
+                            @error('recorrencia_valor_tipo')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 finance-recorrencia-opcao d-none">
+                            <label class="form-label">Repetir por</label>
+                            <div class="input-group input-group-solid">
+                                <input type="number" name="recorrencia_quantidade" class="form-control @error('recorrencia_quantidade') is-invalid @enderror" value="{{ old('recorrencia_quantidade', 12) }}" min="1" max="60" />
+                                <span class="input-group-text">meses</span>
+                            </div>
+                            @error('recorrencia_quantidade')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6">
                             <label class="form-label">Descrição</label>
                             <input type="text" name="descricao" class="form-control form-control-solid @error('descricao') is-invalid @enderror" value="{{ old('descricao') }}" />
                             @error('descricao')
@@ -123,3 +158,4 @@
         </div>
     </div>
 </div>
+

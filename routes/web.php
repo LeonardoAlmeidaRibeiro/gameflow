@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\FinanceController;
+use App\Http\Controllers\CategoriaController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -30,4 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/finance', [FinanceController::class, 'store'])->name('finance.store');
     Route::put('/finance/{finance}', [FinanceController::class, 'update'])->name('finance.update');
     Route::delete('/finance/{finance}', [FinanceController::class, 'destroy'])->name('finance.destroy');
+    Route::get('/categoria', [CategoriaController::class, 'index'])->name('categoria.index');
+    Route::post('/categoria', [CategoriaController::class, 'store'])->name('categoria.store');
+    Route::put('/categoria/{categoria}', [CategoriaController::class, 'update'])->name('categoria.update');
+    Route::delete('/categoria/{categoria}', [CategoriaController::class, 'destroy'])->name('categoria.destroy');
 });

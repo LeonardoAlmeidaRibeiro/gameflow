@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal_editar_financeiro" tabindex="-1" aria-hidden="true">
+﻿<div class="modal fade" id="modal_editar_financeiro" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <form method="POST" id="form_editar_financeiro">
@@ -69,6 +69,27 @@
                         </div>
 
                         <div class="col-md-6">
+                            <label class="form-label">Recorrência</label>
+                            <div class="form-control form-control-solid d-flex align-items-center min-h-44px">
+                                <input type="hidden" name="recorrente" value="0" />
+                                <div class="form-check form-switch form-check-custom form-check-solid m-0">
+                                    <input class="form-check-input" type="checkbox" name="recorrente" value="1" id="editar_recorrente" />
+                                    <label class="form-check-label" for="editar_recorrente">
+                                        Repetir mensalmente
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 finance-recorrencia-editar-opcao d-none">
+                            <label class="form-label">Tipo de valor</label>
+                            <select name="recorrencia_valor_tipo" id="editar_recorrencia_valor_tipo" class="form-select form-select-solid">
+                                <option value="fixo">Fixo</option>
+                                <option value="variavel">Variável / estimado</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
                             <label class="form-label">Descrição</label>
                             <input type="text" name="descricao" id="editar_descricao" class="form-control form-control-solid" />
                         </div>
@@ -88,3 +109,4 @@
         </div>
     </div>
 </div>
+
