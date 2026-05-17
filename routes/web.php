@@ -5,6 +5,10 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\WorkoutController;
+use App\Http\Controllers\MuscleGroupController;
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -34,8 +38,31 @@ Route::middleware('auth')->group(function () {
     Route::post('/finance/payment-methods', [FinanceController::class, 'storePaymentMethod'])->name('finance.payment-methods.store');
     Route::put('/finance/payment-methods/{paymentMethod}', [FinanceController::class, 'updatePaymentMethod'])->name('finance.payment-methods.update');
     Route::delete('/finance/payment-methods/{paymentMethod}', [FinanceController::class, 'destroyPaymentMethod'])->name('finance.payment-methods.destroy');
+
     Route::get('/categoria', [CategoriaController::class, 'index'])->name('categoria.index');
     Route::post('/categoria', [CategoriaController::class, 'store'])->name('categoria.store');
     Route::put('/categoria/{categoria}', [CategoriaController::class, 'update'])->name('categoria.update');
     Route::delete('/categoria/{categoria}', [CategoriaController::class, 'destroy'])->name('categoria.destroy');
+
+    Route::get('/workouts', [WorkoutController::class, 'index'])->name('workouts.index');
+    Route::post('/workouts', [WorkoutController::class, 'storeWorkout'])->name('workouts.store');
+    Route::put('/workouts/{workout}', [WorkoutController::class, 'updateWorkout'])->name('workouts.update');
+    Route::delete('/workouts/{workout}', [WorkoutController::class, 'destroyWorkout'])->name('workouts.destroy');
+    Route::post('/workouts/progress', [WorkoutController::class, 'storeProgress'])->name('workouts.progress.store');
+    Route::put('/workouts/progress/{progress}', [WorkoutController::class, 'updateProgress'])->name('workouts.progress.update');
+    Route::delete('/workouts/progress/{progress}', [WorkoutController::class, 'destroyProgress'])->name('workouts.progress.destroy');
+    Route::post('/workouts/divisions', [WorkoutController::class, 'storeDivision'])->name('workouts.divisions.store');
+    Route::put('/workouts/divisions/{division}', [WorkoutController::class, 'updateDivision'])->name('workouts.divisions.update');
+    Route::delete('/workouts/divisions/{division}', [WorkoutController::class, 'destroyDivision'])->name('workouts.divisions.destroy');
+    Route::post('/workouts/exercises', [WorkoutController::class, 'storeExercise'])->name('workouts.exercises.store');
+    Route::put('/workouts/exercises/{exercise}', [WorkoutController::class, 'updateExercise'])->name('workouts.exercises.update');
+    Route::delete('/workouts/exercises/{exercise}', [WorkoutController::class, 'destroyExercise'])->name('workouts.exercises.destroy');
+    Route::post('/workouts/routines', [WorkoutController::class, 'storeRoutine'])->name('workouts.routines.store');
+    Route::put('/workouts/routines/{routine}', [WorkoutController::class, 'updateRoutine'])->name('workouts.routines.update');
+    Route::delete('/workouts/routines/{routine}', [WorkoutController::class, 'destroyRoutine'])->name('workouts.routines.destroy');
+
+    Route::get('/muscle-group', [MuscleGroupController::class, 'index'])->name('muscle-group.index');
+    Route::post('/muscle-group', [MuscleGroupController::class, 'store'])->name('muscle-group.store');
+    Route::put('/muscle-group/{muscleGroup}', [MuscleGroupController::class, 'update'])->name('muscle-group.update');
+    Route::delete('/muscle-group/{muscleGroup}', [MuscleGroupController::class, 'destroy'])->name('muscle-group.destroy');
 });

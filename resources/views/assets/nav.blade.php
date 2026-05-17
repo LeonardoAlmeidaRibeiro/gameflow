@@ -10,6 +10,11 @@
             'route' => 'finance.index',
             'active' => ['finance.*'],
         ],
+        [
+            'label' => 'Treinos',
+            'route' => 'workouts.index',
+            'active' => ['workouts.*'],
+        ],
     ];
 @endphp
 
