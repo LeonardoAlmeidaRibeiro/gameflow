@@ -27,11 +27,11 @@ class AccountController extends Controller
 
         foreach ($paths as $path) {
             if (is_file($path)) {
-                return response()->file($path);
+                return $this->photoResponse($path);
             }
         }
 
-        return response()->file(public_path('assets/media/avatars/300-1.jpg'));
+        return $this->photoResponse(public_path('assets/media/avatars/300-1.jpg'));
     }
 
     public function update(Request $request)
@@ -82,7 +82,7 @@ class AccountController extends Controller
                     ->withInput();
             }
 
-            if ($user->photo) {
+            if ($user->photo && Str::startsWith(ltrim($user->photo, '/'), 'assets/media/profile-photos/')) {
                 $photoPaths = [
                     public_path(ltrim($user->photo, '/')),
                     public_path('storage/' . ltrim($user->photo, '/')),
@@ -113,12 +113,22 @@ class AccountController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Perfil atualizado com sucesso.',
-                'photo_url' => route('account.photo'),
+                'photo_url' => route('account.photo', ['v' => optional($user->fresh()->updated_at)->timestamp ?? time()]),
             ]);
         }
 
         return redirect()
             ->route('account.show')
             ->with('status', 'Perfil atualizado com sucesso.');
+    }
+
+    private function photoResponse(string $path)
+    {
+        $response = response()->file($path);
+        $response->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+        $response->headers->set('Pragma', 'no-cache');
+        $response->headers->set('Expires', '0');
+
+        return $response;
     }
 }

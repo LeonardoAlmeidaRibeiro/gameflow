@@ -231,8 +231,9 @@
     : 'Não informado';
     $createdAt = data_get($profileUser, 'created_at');
     $profilePhotoPath = data_get($profileUser, 'photo');
+    $profilePhotoVersion = optional(data_get($profileUser, 'updated_at'))->timestamp ?? time();
     $profilePhoto = $profilePhotoPath
-    ? route('account.photo')
+    ? route('account.photo', ['v' => $profilePhotoVersion])
     : asset('assets/media/avatars/300-1.jpg');
     $gameLevel = 8;
     $currentXp = 3420;

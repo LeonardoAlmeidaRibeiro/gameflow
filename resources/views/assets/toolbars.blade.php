@@ -108,7 +108,7 @@
 																<!--begin:Menu item-->
 																<div class="menu-item p-0 m-0">
 																	<!--begin:Menu link-->
-																	<a href="../../demo1/dist/dashboards/projects.html" class="menu-link">
+																	<a href="{{route('finance.index')}}"" class="menu-link">
 																		<span class="menu-custom-icon d-flex flex-center flex-shrink-0 rounded w-40px h-40px me-3">
 																			<!--begin::Svg Icon | path: icons/duotune/abstract/abs045.svg-->
 																			<span class="svg-icon svg-icon-info svg-icon-1">
@@ -120,7 +120,7 @@
 																			<!--end::Svg Icon-->
 																		</span>
 																		<span class="d-flex flex-column">
-																			<span class="fs-6 fw-bold text-gray-800">Projects</span>
+																			<span class="fs-6 fw-bold text-gray-800">Finanças</span>
 																			<span class="fs-7 fw-semibold text-muted">Tasts, graphs & charts</span>
 																		</span>
 																	</a>
@@ -300,7 +300,7 @@
 														<div class="menu-item p-0 m-0">
 															<!--begin:Menu link-->
 															<a href="../../demo1/dist/dashboards/finance-performance.html" class="menu-link py-2">
-																<span class="menu-title">Finance Performance</span>
+																<span class="menu-title">Desempenho financeiro</span>
 															</a>
 															<!--end:Menu link-->
 														</div>
@@ -439,8 +439,8 @@
 																		<!--begin:Menu item-->
 																		<div class="menu-item p-0 m-0">
 																			<!--begin:Menu link-->
-																			<a href="../../demo1/dist/pages/user-profile/projects.html" class="menu-link">
-																				<span class="menu-title">Projects</span>
+																			<a href="{{ route('finance.index') }}" class="menu-link">
+																				<span class="menu-title">Finanças</span>
 																			</a>
 																			<!--end:Menu link-->
 																		</div>
@@ -1637,7 +1637,7 @@
 														</span>
 														<!--end::Svg Icon-->
 													</span>
-													<span class="menu-title">Projects</span>
+													<span class="menu-title">Finanças</span>
 													<span class="menu-arrow"></span>
 												</span>
 												<!--end:Menu link-->
@@ -1650,7 +1650,7 @@
 															<span class="menu-bullet">
 																<span class="bullet bullet-dot"></span>
 															</span>
-															<span class="menu-title">My Projects</span>
+															<span class="menu-title">Minhas Finanças</span>
 														</a>
 														<!--end:Menu link-->
 													</div>
@@ -3086,8 +3086,9 @@
 							<!--end::Menu wrapper-->
 							@php
 								$profileUser = $profileUser ?? auth()->user();
+								$profilePhotoVersion = optional(data_get($profileUser, 'updated_at'))->timestamp ?? time();
 								$profilePhoto = $profilePhoto
-									?? (data_get($profileUser, 'photo') ? route('account.photo') : asset('assets/media/avatars/300-1.jpg'));
+									?? (data_get($profileUser, 'photo') ? route('account.photo', ['v' => $profilePhotoVersion]) : asset('assets/media/avatars/300-1.jpg'));
 							@endphp
 							<!--begin::Navbar-->
 							<div class="app-navbar flex-shrink-0">
@@ -3128,7 +3129,7 @@
 										<!--begin::Menu item-->
 										<div class="menu-item px-5">
 											<a href="../../demo1/dist/apps/projects/list.html" class="menu-link px-5">
-												<span class="menu-text">My Projects</span>
+												<span class="menu-text">Minhas Finanças</span>
 												<span class="menu-badge">
 													<span class="badge badge-light-danger badge-circle fw-bold fs-7">3</span>
 												</span>

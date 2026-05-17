@@ -13,20 +13,23 @@ class CategoriaSeeder extends Seeder
     public function run(): void
     {
         $categorias = [
-            'Alimentação',
-            'Assinaturas',
-            'Educação',
-            'Investimentos',
-            'Lazer',
-            'Moradia',
-            'Receita',
-            'Saúde',
-            'Transporte',
-            'Outros',
+            ['nome' => 'Alimentação', 'icone' => '🍽️'],
+            ['nome' => 'Assinaturas', 'icone' => '🔁'],
+            ['nome' => 'Educação', 'icone' => '📚'],
+            ['nome' => 'Investimentos', 'icone' => '📈'],
+            ['nome' => 'Lazer', 'icone' => '🎮'],
+            ['nome' => 'Moradia', 'icone' => '🏠'],
+            ['nome' => 'Receita', 'icone' => '💰'],
+            ['nome' => 'Saúde', 'icone' => '🩺'],
+            ['nome' => 'Transporte', 'icone' => '🚗'],
+            ['nome' => 'Outros', 'icone' => '📦'],
         ];
 
         foreach ($categorias as $categoria) {
-            Categoria::firstOrCreate(['nome' => $categoria]);
+            Categoria::updateOrCreate(
+                ['nome' => $categoria['nome']],
+                ['icone' => $categoria['icone']]
+            );
         }
     }
 }

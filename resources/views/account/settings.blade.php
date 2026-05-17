@@ -1,8 +1,9 @@
 @php
     $profileUser = $profileUser ?? auth()->user();
     $profilePhotoPath = data_get($profileUser, 'photo');
+    $profilePhotoVersion = optional(data_get($profileUser, 'updated_at'))->timestamp ?? time();
     $profilePhoto = $profilePhotoPath
-        ? route('account.photo')
+        ? route('account.photo', ['v' => $profilePhotoVersion])
         : asset('assets/media/avatars/300-1.jpg');
 @endphp
 
@@ -88,7 +89,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" id="account_edit_submit" class="btn btn-primary" onclick="executarModalEditar()">Salvar alteracoes</button>
+                    <button type="button" id="account_edit_submit" class="btn btn-primary" onclick="executarModalEditar()">Salvar alterações</button>
                 </div>
             </form>
         </div>
@@ -187,6 +188,12 @@
                         title: 'Sucesso!',
                         text: result.data.message || 'Perfil atualizado com sucesso.'
                     }).then(function () {
+                        if (result.data.photo_url) {
+                            document.querySelectorAll('img[src*="/account/photo"]').forEach(function (image) {
+                                image.src = result.data.photo_url;
+                            });
+                        }
+
                         window.location.reload();
                     });
                 } else {
@@ -194,7 +201,7 @@
                 }
             })
             .catch(function () {
-                var message = 'Nao foi possivel salvar as alteracoes. Tente novamente.';
+                var message = 'Não foi possível salvar as alterações. Tente novamente.';
 
                 if (window.Swal) {
                     Swal.fire({ icon: 'error', title: 'Ops...', text: message });
@@ -205,7 +212,7 @@
             .finally(function () {
                 if (button) {
                     button.disabled = false;
-                    button.innerHTML = button.getAttribute('data-original-text') || 'Salvar alteracoes';
+                    button.innerHTML = button.getAttribute('data-original-text') || 'Salvar alterações';
                 }
             });
     }

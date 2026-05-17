@@ -1,7 +1,7 @@
 ﻿<div class="modal fade" id="modal_adicionar_financeiro" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
-            <form method="POST" action="{{ route('finance.store') }}">
+            <form method="POST" action="{{ route('finance.store') }}" id="form_adicionar_financeiro" data-finance-form novalidate>
                 @csrf
                 <input type="hidden" name="mes" value="{{ $financeMonth }}" />
                 <input type="hidden" name="ano" value="{{ $financeYear }}" />
@@ -53,7 +53,7 @@
                             <select name="categoria_id" class="form-select form-select-solid @error('categoria_id') is-invalid @enderror">
                                 <option value="">Selecione</option>
                                 @foreach ($financeCategories as $category)
-                                    <option value="{{ $category->id }}" @selected((int) old('categoria_id') === $category->id)>{{ $category->nome }}</option>
+                                    <option value="{{ $category->id }}" @selected((int) old('categoria_id') === $category->id)>{{ $category->icone ?: '🏷️' }} {{ $category->nome }}</option>
                                 @endforeach
                             </select>
                             @error('categoria_id')
@@ -91,8 +91,15 @@
 
                         <div class="col-md-6">
                             <label class="form-label">Forma de pagamento</label>
-                            <input type="text" name="forma_pagamento" class="form-control form-control-solid @error('forma_pagamento') is-invalid @enderror" value="{{ old('forma_pagamento') }}" />
-                            @error('forma_pagamento')
+                            <select name="payment_method_id" class="form-select form-select-solid @error('payment_method_id') is-invalid @enderror">
+                                <option value="">Selecione</option>
+                                @foreach ($paymentMethods as $paymentMethod)
+                                    <option value="{{ $paymentMethod->id }}" @selected((int) old('payment_method_id') === $paymentMethod->id)>
+                                        {{ $paymentMethod->display_name }} - {{ $paymentMethod->tipo_label }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('payment_method_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>

@@ -21,9 +21,11 @@
     function abrirModalEditar(id)
     {
         var celula_a = $("#celula_a_"+id).text();
+        var celula_icone = $("#celula_icone_"+id).text();
         
         $("#id_edit").val(id);
         $("#nome_edit").val(celula_a);
+        $("#icone_edit").val(celula_icone);
     }
 
     function executarModalEditar()
@@ -34,11 +36,12 @@
 
         var id     = $("#id_edit").val();
         var nome   = $("#nome_edit").val();
+        var icone  = $("#icone_edit").val();
 
         $.ajax({
             url: "{{ route('categoria.update', '') }}/"+id,
             type: "PUT",
-            data: "&nome=" + nome,
+            data: $.param({nome: nome, icone: icone}),
             headers: headers,
             error: function(data) {
                 
@@ -69,6 +72,7 @@
 
                 if(success == true){
                     $("#celula_a_"+id).html(nome);
+                    $("#celula_icone_"+id).html(icone || '🏷️');
                     Swal.fire({ icon: 'success', title: 'Sucesso!', text: message });
                 }else{
                     Swal.fire({ icon: 'error', title: 'Oops...', text: message });
@@ -84,6 +88,7 @@
         }
 
         var nome   = $("#nome").val();
+        var icone  = $("#icone").val();
 
         if(nome == ''){
             Swal.fire({ icon: 'error', title: 'Oops...', text: 'Preencha o campo Categoria'});
@@ -93,7 +98,7 @@
         $.ajax({
             url: "{{ route('categoria.store') }}",
             type: "POST",
-            data: "&nome=" + nome,
+            data: $.param({nome: nome, icone: icone}),
             headers: headers,
             error: function(data) {
                 
@@ -128,10 +133,11 @@
                 if(success == true){
 
                     $("#nome").val("");
+                    $("#icone").val("");
 
                     var novoRegistro = '<tr id="tr_'+id+'">' +
                                             '<td>' +
-                                            '    <a href="#" onClick="return abrirModalEditar('+id+');" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar"><div id="celula_a_'+id+'">' + nome + '</div></a>' +
+                                            '    <a href="#" onClick="return abrirModalEditar('+id+');" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar"><div class="d-flex align-items-center gap-2"><span id="celula_icone_'+id+'" class="fs-4">' + (icone || '🏷️') + '</span><span id="celula_a_'+id+'">' + nome + '</span></div></a>' +
                                             '</td>' +
                                             '<td class="text-end">' +
                                             '    <div class="card-toolbar">' +

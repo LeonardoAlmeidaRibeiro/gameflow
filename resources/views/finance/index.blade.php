@@ -230,8 +230,9 @@
     : 'Não informado';
     $createdAt = data_get($profileUser, 'created_at');
     $profilePhotoPath = data_get($profileUser, 'photo');
+    $profilePhotoVersion = optional(data_get($profileUser, 'updated_at'))->timestamp ?? time();
     $profilePhoto = $profilePhotoPath
-    ? route('account.photo')
+    ? route('account.photo', ['v' => $profilePhotoVersion])
     : asset('assets/media/avatars/300-1.jpg');
     $gameLevel = 8;
     $currentXp = 3420;
@@ -301,14 +302,6 @@
                         <div id="kt_app_content" class="app-content flex-column-fluid">
                             <!--begin::Content container-->
                             <div id="kt_app_content_container" class="app-container container-xxl">
-                                @if (session('status'))
-                                    <div class="alert alert-success d-flex align-items-center p-5 mb-8">
-                                        <div class="d-flex flex-column">
-                                            <span>{{ session('status') }}</span>
-                                        </div>
-                                    </div>
-                                @endif
-
                                 <!--begin::Navbar-->
                                 <div class="card mb-5 mb-xl-10">
                                     <div class="card-body pt-9 pb-0">
@@ -332,11 +325,10 @@
                                         <div class="d-flex align-items-center gap-3">
                                             <form method="GET" action="{{ route('finance.index') }}" class="d-flex align-items-center gap-3">
                                                 <select name="mes" class="form-select form-select-sm form-select-solid w-100px">
-                                                    @for ($monthOption = 1; $monthOption <= 12; $monthOption++)
-                                                        <option value="{{ $monthOption }}" @selected($financeMonth === $monthOption)>
-                                                            {{ str_pad($monthOption, 2, '0', STR_PAD_LEFT) }}
+                                                    @for ($monthOption = 1; $monthOption <= 12; $monthOption++) <option value="{{ $monthOption }}" @selected($financeMonth===$monthOption)>
+                                                        {{ str_pad($monthOption, 2, '0', STR_PAD_LEFT) }}
                                                         </option>
-                                                    @endfor
+                                                        @endfor
                                                 </select>
                                                 <input type="number" name="ano" class="form-control form-control-sm form-control-solid w-100px" value="{{ $financeYear }}" min="2000" max="2100" />
                                                 <button type="submit" class="btn btn-sm btn-primary">Filtrar</button>
@@ -377,6 +369,97 @@
                                     <!--end::Card body-->
                                 </div>
                                 <!--end::details View-->
+
+                                <div class="card mb-5 mb-xl-10">
+                                    <div class="card-header cursor-pointer">
+                                        <div class="card-title m-0">
+                                            <h3 class="fw-bold m-0">Cartões e carteiras</h3>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal_adicionar_forma_pagamento">
+                                                  <span class="svg-icon svg-icon-2">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                        <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="black" />
+                                                        <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="black" />
+                                                    </svg>
+                                                </span>forma de pagamento
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-9">
+                                        <div class="table-responsive">
+                                            <table class="table align-middle table-row-dashed fs-6 gy-5">
+                                                <thead>
+                                                    <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                                                        <th class="min-w-180px">Nome</th>
+                                                        <th class="min-w-150px">Tipo</th>
+                                                        <th class="min-w-120px">Bandeira</th>
+                                                        <th class="text-center min-w-110px">Final</th>
+                                                        <th class="text-center min-w-110px">Status</th>
+                                                        <th class="text-end min-w-170px">Ações</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="text-gray-700 fw-semibold">
+                                                    @forelse ($paymentMethods as $paymentMethod)
+                                                    @php
+                                                    $paymentMethodPayload = [
+                                                    'updateUrl' => route('finance.payment-methods.update', $paymentMethod),
+                                                    'nome' => $paymentMethod->nome,
+                                                    'tipo' => $paymentMethod->tipo,
+                                                    'bandeira' => $paymentMethod->bandeira,
+                                                    'ultimos_digitos' => $paymentMethod->ultimos_digitos,
+                                                    'ativo' => (bool) $paymentMethod->ativo,
+                                                    ];
+                                                    @endphp
+                                                    <tr>
+                                                        <td class="align-middle">
+                                                            <div class="fw-bold text-gray-900">{{ $paymentMethod->nome }}</div>
+                                                        </td>
+                                                        <td class="align-middle">{{ $paymentMethod->tipo_label }}</td>
+                                                        <td class="align-middle">{{ $paymentMethod->bandeira ?: '-' }}</td>
+                                                        <td class="align-middle text-center">{{ $paymentMethod->ultimos_digitos ?: '-' }}</td>
+                                                        <td class="align-middle text-center">
+                                                            <span class="badge {{ $paymentMethod->ativo ? 'badge-light-success' : 'badge-light-secondary' }}">
+                                                                {{ $paymentMethod->ativo ? 'Ativo' : 'Inativo' }}
+                                                            </span>
+                                                        </td>
+                                                        <td class="align-middle text-end text-nowrap">
+                                                            <button type="button" class="btn btn-sm btn-light-primary me-2" onclick="editarFormaPagamento(this)" data-payment-method='@json($paymentMethodPayload)'>
+                                                                <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                                                                <span class="svg-icon svg-icon-2">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                        <path opacity="0.3" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="black" />
+                                                                        <path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="black" />
+                                                                    </svg>
+                                                                </span>
+                                                                <!--end::Svg Icon--> Editar
+                                                            </button>
+                                                            <form method="POST" action="{{ route('finance.payment-methods.destroy', $paymentMethod) }}" class="d-inline payment-method-delete-form">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-sm btn-light-danger">
+                                                                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                                                                    <span class="svg-icon svg-icon-2">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                            <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="black" />
+                                                                            <path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="black" />
+                                                                            <path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="black" />
+                                                                        </svg>
+                                                                    </span>
+                                                                    <!--end::Svg Icon-->Excluir</button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                    @empty
+                                                    <tr>
+                                                        <td colspan="6" class="text-center text-muted py-8">Nenhum cartão ou carteira digital cadastrada.</td>
+                                                    </tr>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <!--begin::details View-->
                                 <div class="card mb-5 mb-xl-10" id="kt_profile_details_view">
@@ -420,71 +503,83 @@
                                                 </thead>
                                                 <tbody class="text-gray-700 fw-semibold">
                                                     @forelse ($finances as $finance)
-                                                        <tr id="tr_{{ $finance->id }}">
+                                                    <tr id="tr_{{ $finance->id }}">
+                                                        <td class="align-middle">
+                                                            <div class="fw-bold text-gray-900">{{ $finance->titulo }}</div>
+                                                            @if ($finance->descricao)
+                                                            <div class="text-muted fs-7">{{ $finance->descricao }}</div>
+                                                            @endif
+                                                            @if ($finance->paymentMethod || $finance->forma_pagamento)
+                                                            <div class="text-muted fs-7">{{ optional($finance->paymentMethod)->display_name ?: $finance->forma_pagamento }}</div>
+                                                            @endif
+                                                        </td>
+                                                        <td class="align-middle text-center">
+                                                            <span class="badge {{ $finance->tipo === 'receita' ? 'badge-light-success' : 'badge-light-danger' }}">
+                                                                {{ ucfirst($finance->tipo) }}
+                                                            </span>
+                                                        </td>
                                                             <td class="align-middle">
-                                                                <div class="fw-bold text-gray-900">{{ $finance->titulo }}</div>
-                                                                @if ($finance->descricao)
-                                                                    <div class="text-muted fs-7">{{ $finance->descricao }}</div>
+                                                                @if ($finance->categoria)
+                                                                    <span class="me-2">{{ $finance->categoria->icone ?: '       🏷️' }}</span>{{ $finance->categoria->nome }}
+                                                                @else
+                                                                    Sem categoria
                                                                 @endif
                                                             </td>
-                                                            <td class="align-middle text-center">
-                                                                <span class="badge {{ $finance->tipo === 'receita' ? 'badge-light-success' : 'badge-light-danger' }}">
-                                                                    {{ ucfirst($finance->tipo) }}
+                                                        <td class="align-middle text-center">
+                                                            <span class="badge {{ $finance->status === 'pago' ? 'badge-light-success' : ($finance->status === 'cancelado' ? 'badge-light-danger' : 'badge-light-warning') }}">
+                                                                {{ ucfirst($finance->status) }}
+                                                            </span>
+                                                        </td>
+                                                        <td class="align-middle text-center">{{ $finance->data_vencimento ? $finance->data_vencimento->format('d/m/Y') : 'Não informado' }}</td>
+                                                        <td class="align-middle text-end {{ $finance->tipo === 'receita' ? 'text-success' : 'text-danger' }}">
+                                                            {{ $finance->tipo === 'receita' ? '+' : '-' }} R$ {{ number_format((float) $finance->valor, 2, ',', '.') }}
+                                                        </td>
+                                                        @php
+                                                        $financePayload = [
+                                                        'updateUrl' => route('finance.update', $finance),
+                                                        'titulo' => $finance->titulo,
+                                                        'descricao' => $finance->descricao,
+                                                        'tipo' => $finance->tipo,
+                                                        'categoria_id' => $finance->categoria_id,
+                                                        'valor' => number_format((float) $finance->valor, 2, ',', '.'),
+                                                        'mes' => $finance->mes,
+                                                        'ano' => $finance->ano,
+                                                        'status' => $finance->status,
+                                                        'data_vencimento' => optional($finance->data_vencimento)->format('Y-m-d'),
+                                                        'data_pagamento' => optional($finance->data_pagamento)->format('Y-m-d'),
+                                                        'forma_pagamento' => $finance->forma_pagamento,
+                                                        'payment_method_id' => $finance->payment_method_id,
+                                                        'recorrente' => (bool) $finance->recorrente,
+                                                        'recorrencia_valor_tipo' => $finance->recorrencia_valor_tipo,
+                                                        'observacoes' => $finance->observacoes,
+                                                        ];
+                                                        @endphp
+                                                        <td class="align-middle text-end text-nowrap">
+                                                            <button type="button" class="btn btn-sm btn-light-primary me-2" onclick="editarFinanceiro(this)" data-finance='@json($financePayload)'>
+                                                                <span class="svg-icon svg-icon-2">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                        <path opacity="0.3" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="black" />
+                                                                        <path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="black" />
+                                                                    </svg>
                                                                 </span>
-                                                            </td>
-                                                            <td class="align-middle">{{ optional($finance->categoria)->nome ?: 'Sem categoria' }}</td>
-                                                            <td class="align-middle text-center">
-                                                                <span class="badge {{ $finance->status === 'pago' ? 'badge-light-success' : ($finance->status === 'cancelado' ? 'badge-light-danger' : 'badge-light-warning') }}">
-                                                                    {{ ucfirst($finance->status) }}
+                                                                Editar
+                                                            </button>
+                                                            <button type="button" class="btn btn-sm btn-light-danger" onclick="excluir({{ $finance->id }})">
+                                                                <span class="svg-icon svg-icon-2">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                        <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="black" />
+                                                                        <path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="black" />
+                                                                        <path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="black" />
+                                                                    </svg>
                                                                 </span>
-                                                            </td>
-                                                            <td class="align-middle text-center">{{ $finance->data_vencimento ? $finance->data_vencimento->format('d/m/Y') : 'Não informado' }}</td>
-                                                            <td class="align-middle text-end {{ $finance->tipo === 'receita' ? 'text-success' : 'text-danger' }}">
-                                                                {{ $finance->tipo === 'receita' ? '+' : '-' }} R$ {{ number_format((float) $finance->valor, 2, ',', '.') }}
-                                                            </td>
-                                                            @php
-                                                                $financePayload = [
-                                                                    'updateUrl' => route('finance.update', $finance),
-                                                                    'titulo' => $finance->titulo,
-                                                                    'descricao' => $finance->descricao,
-                                                                    'tipo' => $finance->tipo,
-                                                                    'categoria_id' => $finance->categoria_id,
-                                                                    'valor' => number_format((float) $finance->valor, 2, ',', '.'),
-                                                                    'mes' => $finance->mes,
-                                                                    'ano' => $finance->ano,
-                                                                    'status' => $finance->status,
-                                                                    'data_vencimento' => optional($finance->data_vencimento)->format('Y-m-d'),
-                                                                    'data_pagamento' => optional($finance->data_pagamento)->format('Y-m-d'),
-                                                                    'forma_pagamento' => $finance->forma_pagamento,
-                                                                    'observacoes' => $finance->observacoes,
-                                                                ];
-                                                            @endphp
-                                                            <td class="align-middle text-end text-nowrap">
-                                                                <button type="button" class="btn btn-sm btn-light-primary me-2" onclick="editarFinanceiro(this)" data-finance='@json($financePayload)'>
-                                                                    <span class="svg-icon svg-icon-2">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                                            <path opacity="0.3" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="black" />
-                                                                            <path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="black" />
-                                                                        </svg>
-                                                                    </span>
-                                                                    Editar
-                                                                </button>
-                                                                <button type="button" class="btn btn-sm btn-light-danger" onclick="excluir({{ $finance->id }})">
-                                                                    <span class="svg-icon svg-icon-2">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                                            <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="black" />
-                                                                            <path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="black" />
-                                                                            <path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="black" />
-                                                                        </svg>
-                                                                    </span>
-                                                                    Excluir
-                                                                </button>
-                                                            </td>
-                                                        </tr>
+                                                                Excluir
+                                                            </button>
+                                                        </td>
+                                                    </tr>
                                                     @empty
-                                                        <tr>
-                                                            <td colspan="7" class="text-center text-muted py-10">Nenhum lançamento financeiro encontrado para este período.</td>
-                                                        </tr>
+                                                    <tr>
+                                                        <td colspan="7" class="text-center text-muted py-10">Nenhum lançamento financeiro encontrado para este período.</td>
+                                                    </tr>
                                                     @endforelse
                                                 </tbody>
                                             </table>
@@ -513,6 +608,7 @@
     <!--end::App-->
     @include('finance.criar')
     @include('finance.editar')
+    @include('finance.payment-methods')
     <!--begin::Drawers-->
 
 
@@ -532,6 +628,18 @@
     <script src="{{ asset('assets/js/custom/widgets.js') }}"></script>
     <script src="{{ asset('assets/js/custom/chat.js') }}"></script>
     <script>
+        var financeRequiredFields = {
+            titulo: 'Título'
+            , tipo: 'Tipo'
+            , valor: 'Valor'
+            , status: 'Status'
+        };
+
+        var paymentMethodRequiredFields = {
+            nome: 'Nome'
+            , tipo: 'Tipo'
+        };
+
         function preencherCampoFinanceiro(id, value) {
             var field = document.getElementById(id);
 
@@ -540,10 +648,67 @@
             }
         }
 
+        function setFinanceRecorrenciaState(checkbox, optionSelector) {
+            var options = document.querySelectorAll(optionSelector);
+            var enabled = checkbox && checkbox.checked;
+
+            options.forEach(function(option) {
+                option.classList.toggle('d-none', !enabled);
+                option.querySelectorAll('input, select, textarea').forEach(function(field) {
+                    field.disabled = !enabled;
+                });
+            });
+        }
+
+        function showFinanceValidationAlert(fieldLabel) {
+            Swal.fire({
+                icon: 'warning'
+                , title: 'Campo obrigatório'
+                , text: 'Preencha o campo ' + fieldLabel + '.'
+            });
+        }
+
+        function validarFormularioFinanceiro(form) {
+            for (var fieldName in financeRequiredFields) {
+                if (!Object.prototype.hasOwnProperty.call(financeRequiredFields, fieldName)) {
+                    continue;
+                }
+
+                var field = form.querySelector('[name="' + fieldName + '"]');
+
+                if (field && !String(field.value || '').trim()) {
+                    field.focus();
+                    showFinanceValidationAlert(financeRequiredFields[fieldName]);
+                    return false;
+                }
+            }
+
+            var recorrenteField = form.querySelector('[name="recorrente"][type="checkbox"]');
+            var recorrenciaQuantidade = form.querySelector('[name="recorrencia_quantidade"]');
+
+            if (recorrenteField && recorrenteField.checked && recorrenciaQuantidade && !String(recorrenciaQuantidade.value || '').trim()) {
+                recorrenciaQuantidade.focus();
+                showFinanceValidationAlert('Repetir por');
+                return false;
+            }
+
+            return true;
+        }
+
+        function prepararFormularioFinanceiro(form) {
+            form.addEventListener('submit', function(event) {
+                if (!validarFormularioFinanceiro(form)) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+            });
+        }
+
         function editarFinanceiro(button) {
             var data = JSON.parse(button.getAttribute('data-finance'));
             var form = document.getElementById('form_editar_financeiro');
             var modalElement = document.getElementById('modal_editar_financeiro');
+            var recorrenteField = document.getElementById('editar_recorrente');
 
             if (!form || !modalElement) {
                 return;
@@ -560,8 +725,78 @@
             preencherCampoFinanceiro('editar_status', data.status);
             preencherCampoFinanceiro('editar_data_vencimento', data.data_vencimento);
             preencherCampoFinanceiro('editar_data_pagamento', data.data_pagamento);
-            preencherCampoFinanceiro('editar_forma_pagamento', data.forma_pagamento);
+            preencherCampoFinanceiro('editar_payment_method_id', data.payment_method_id);
+            preencherCampoFinanceiro('editar_recorrencia_valor_tipo', data.recorrencia_valor_tipo || 'fixo');
             preencherCampoFinanceiro('editar_observacoes', data.observacoes);
+
+            if (recorrenteField) {
+                recorrenteField.checked = Boolean(data.recorrente);
+                setFinanceRecorrenciaState(recorrenteField, '.finance-recorrencia-editar-opcao');
+            }
+
+            if (window.bootstrap) {
+                new bootstrap.Modal(modalElement).show();
+            }
+        }
+
+        function validarFormularioFormaPagamento(form) {
+            for (var fieldName in paymentMethodRequiredFields) {
+                if (!Object.prototype.hasOwnProperty.call(paymentMethodRequiredFields, fieldName)) {
+                    continue;
+                }
+
+                var field = form.querySelector('[name="' + fieldName + '"]');
+
+                if (field && !String(field.value || '').trim()) {
+                    field.focus();
+                    showFinanceValidationAlert(paymentMethodRequiredFields[fieldName]);
+                    return false;
+                }
+            }
+
+            var digitsField = form.querySelector('[name="ultimos_digitos"]');
+
+            if (digitsField && String(digitsField.value || '').trim() && !/^\d{4}$/.test(String(digitsField.value).trim())) {
+                digitsField.focus();
+                Swal.fire({
+                    icon: 'warning'
+                    , title: 'Verifique os campos'
+                    , text: 'Informe exatamente 4 dígitos finais.'
+                });
+                return false;
+            }
+
+            return true;
+        }
+
+        function prepararFormularioFormaPagamento(form) {
+            form.addEventListener('submit', function(event) {
+                if (!validarFormularioFormaPagamento(form)) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+            });
+        }
+
+        function editarFormaPagamento(button) {
+            var data = JSON.parse(button.getAttribute('data-payment-method'));
+            var form = document.getElementById('form_editar_forma_pagamento');
+            var modalElement = document.getElementById('modal_editar_forma_pagamento');
+            var ativoField = document.getElementById('editar_forma_pagamento_ativo');
+
+            if (!form || !modalElement) {
+                return;
+            }
+
+            form.action = data.updateUrl;
+            preencherCampoFinanceiro('editar_forma_pagamento_nome', data.nome);
+            preencherCampoFinanceiro('editar_forma_pagamento_tipo', data.tipo);
+            preencherCampoFinanceiro('editar_forma_pagamento_bandeira', data.bandeira);
+            preencherCampoFinanceiro('editar_forma_pagamento_ultimos_digitos', data.ultimos_digitos);
+
+            if (ativoField) {
+                ativoField.checked = Boolean(data.ativo);
+            }
 
             if (window.bootstrap) {
                 new bootstrap.Modal(modalElement).show();
@@ -574,23 +809,23 @@
             }
 
             Swal.fire({
-                title: 'Tem certeza que deseja excluir?',
-                text: 'Não será possível reverter essa ação.',
-                icon: 'warning',
-                showCancelButton: true,
-                cancelButtonText: 'Cancelar',
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sim, excluir!'
+                title: 'Tem certeza que deseja excluir?'
+                , text: 'Não será possível reverter essa ação.'
+                , icon: 'warning'
+                , showCancelButton: true
+                , cancelButtonText: 'Cancelar'
+                , confirmButtonColor: '#3085d6'
+                , cancelButtonColor: '#d33'
+                , confirmButtonText: 'Sim, excluir!'
             }).then((result) => {
 
                 if (typeof(result.value) != 'undefined' && result.value == true) {
 
                     $.ajax({
-                        url: "{{ url('/finance') }}/" + id,
-                        type: 'DELETE',
-                        headers: headers,
-                        success: function(data) {
+                        url: "{{ url('/finance') }}/" + id
+                        , type: 'DELETE'
+                        , headers: headers
+                        , success: function(data) {
 
                             var message = '';
                             var success = '';
@@ -607,23 +842,23 @@
                             if (success == true) {
                                 $('#tr_' + id).remove();
                                 Swal.fire({
-                                    icon: 'success',
-                                    title: 'Sucesso!',
-                                    text: message
+                                    icon: 'success'
+                                    , title: 'Sucesso!'
+                                    , text: message
                                 });
                             } else {
                                 Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    text: message
+                                    icon: 'error'
+                                    , title: 'Oops...'
+                                    , text: message
                                 });
                             }
-                        },
-                        error: function() {
+                        }
+                        , error: function() {
                             Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Não foi possível excluir o lançamento.'
+                                icon: 'error'
+                                , title: 'Oops...'
+                                , text: 'Não foi possível excluir o lançamento.'
                             });
                         }
                     });
@@ -632,17 +867,105 @@
         }
 
     </script>
-    @if ($errors->any())
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var modalElement = document.getElementById('modal_adicionar_financeiro');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var adicionarRecorrente = document.getElementById('recorrente_adicionar');
+            var editarRecorrente = document.getElementById('editar_recorrente');
 
-                if (modalElement && window.bootstrap) {
-                    new bootstrap.Modal(modalElement).show();
-                }
+            document.querySelectorAll('[data-finance-form]').forEach(function(form) {
+                prepararFormularioFinanceiro(form);
             });
 
-        </script>
+            document.querySelectorAll('[data-payment-method-form]').forEach(function(form) {
+                prepararFormularioFormaPagamento(form);
+            });
+
+            document.querySelectorAll('.payment-method-delete-form').forEach(function(form) {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+
+                    Swal.fire({
+                        title: 'Tem certeza que deseja excluir?'
+                        , text: 'Os lançamentos que usam essa forma de pagamento ficarão sem vínculo.'
+                        , icon: 'warning'
+                        , showCancelButton: true
+                        , cancelButtonText: 'Cancelar'
+                        , confirmButtonColor: '#3085d6'
+                        , cancelButtonColor: '#d33'
+                        , confirmButtonText: 'Sim, excluir!'
+                    }).then(function(result) {
+                        if (result.value) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+
+            if (adicionarRecorrente) {
+                setFinanceRecorrenciaState(adicionarRecorrente, '.finance-recorrencia-opcao');
+                adicionarRecorrente.addEventListener('change', function() {
+                    setFinanceRecorrenciaState(adicionarRecorrente, '.finance-recorrencia-opcao');
+                });
+            }
+
+            if (editarRecorrente) {
+                setFinanceRecorrenciaState(editarRecorrente, '.finance-recorrencia-editar-opcao');
+                editarRecorrente.addEventListener('change', function() {
+                    setFinanceRecorrenciaState(editarRecorrente, '.finance-recorrencia-editar-opcao');
+                });
+            }
+        });
+
+    </script>
+    @if (session('status'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'success'
+                , title: 'Sucesso!'
+                , text: @json(session('status'))
+            });
+        });
+
+    </script>
+    @endif
+    @if (session('payment_method_modal') || $errors->paymentMethod->any())
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var modalElement = document.getElementById('modal_adicionar_forma_pagamento');
+            var firstError = @json($errors->paymentMethod->first());
+
+            if (modalElement && window.bootstrap) {
+                new bootstrap.Modal(modalElement).show();
+            }
+
+            Swal.fire({
+                icon: 'warning'
+                , title: 'Verifique os campos'
+                , text: firstError || 'Preencha os campos obrigatórios da forma de pagamento.'
+            });
+        });
+
+    </script>
+    @endif
+    @if ($errors->any() && !session('payment_method_modal'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var modalElement = document.getElementById('modal_adicionar_financeiro');
+            var firstError = @json($errors->first());
+
+            if (modalElement && window.bootstrap) {
+                new bootstrap.Modal(modalElement).show();
+            }
+
+            Swal.fire({
+                icon: 'warning'
+                , title: 'Verifique os campos'
+                , text: firstError || 'Preencha os campos obrigatórios para continuar.'
+            });
+        });
+
+    </script>
     @endif
     <!--end::Custom Javascript-->
     <!--end::Javascript-->

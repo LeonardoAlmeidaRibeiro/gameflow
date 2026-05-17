@@ -78,11 +78,11 @@
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/dashboards/projects.html">
+												<a class="menu-link" href="{{route('finance.index')}}"">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">Projects</span>
+													<span class="menu-title">Finanças</span>
 												</a>
 												<!--end:Menu link-->
 											</div>
@@ -179,7 +179,7 @@
 														<span class="menu-bullet">
 															<span class="bullet bullet-dot"></span>
 														</span>
-														<span class="menu-title">Finance Performance</span>
+														<span class="menu-title">Desempenho financeiro</span>
 													</a>
 													<!--end:Menu link-->
 												</div>
@@ -341,11 +341,11 @@
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/pages/user-profile/projects.html">
+												<a class="menu-link" href="{{ route('finance.index') }}">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">Projects</span>
+													<span class="menu-title">Finanças</span>
 												</a>
 												<!--end:Menu link-->
 											</div>
@@ -2072,7 +2072,7 @@
 												</span>
 												<!--end::Svg Icon-->
 											</span>
-											<span class="menu-title">Projects</span>
+											<span class="menu-title">Finanças</span>
 											<span class="menu-arrow"></span>
 										</span>
 										<!--end:Menu link-->
@@ -2085,7 +2085,7 @@
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">My Projects</span>
+													<span class="menu-title">Minhas Finanças</span>
 												</a>
 												<!--end:Menu link-->
 											</div>

@@ -274,18 +274,75 @@
                             <!--begin::Content container-->
                             <div id="kt_app_content_container" class="app-container container-xxl">
 
+                                @php
+                                    $alertClasses = [
+                                        'danger' => 'alert-danger',
+                                        'warning' => 'alert-warning',
+                                        'info' => 'alert-info',
+                                        'success' => 'alert-success',
+                                    ];
+                                @endphp
+
+                                <div class="row g-5 g-xl-8 mb-5 mb-xl-10">
+                                    <div class="col-md-4">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <div class="fs-7 fw-semibold text-muted mb-1">Receitas do mês</div>
+                                                <div class="fs-2hx fw-bold text-success">R$ {{ number_format($dashboardTotals['receitas'], 2, ',', '.') }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <div class="fs-7 fw-semibold text-muted mb-1">Despesas do mês</div>
+                                                <div class="fs-2hx fw-bold text-danger">R$ {{ number_format($dashboardTotals['despesas'], 2, ',', '.') }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <div class="fs-7 fw-semibold text-muted mb-1">Saldo do mês</div>
+                                                <div class="fs-2hx fw-bold {{ $dashboardTotals['saldo'] >= 0 ? 'text-primary' : 'text-danger' }}">R$ {{ number_format($dashboardTotals['saldo'], 2, ',', '.') }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card mb-5 mb-xl-10">
+                                    <div class="card-header">
+                                        <h3 class="card-title fw-bold text-dark">Alertas financeiros</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-5">
+                                            @foreach ($financeAlerts as $alert)
+                                                <div class="col-md-6 col-xl-3">
+                                                    <div class="alert {{ $alertClasses[$alert['type']] ?? 'alert-primary' }} h-100 mb-0">
+                                                        <div class="fw-bold mb-1">{{ $alert['title'] }}</div>
+                                                        <div class="fs-7">{{ $alert['message'] }}</div>
+                                                        @if (!is_null($alert['amount']))
+                                                            <div class="fw-bold mt-3">R$ {{ number_format($alert['amount'], 2, ',', '.') }}</div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!--begin::Row-->
                                 <div class="row gx-5 gx-xl-12">
                                     <!--begin::Col-->
                                     <div class="col-xl-12">
                                         <!--begin::Chart widget 24-->
-                                        <div class="card card-flush overflow-hidden h-xl-100">
+                                        <div class="card card-flush h-xl-100">
                                             <!--begin::Header-->
                                             <div class="card-header py-5">
                                                 <!--begin::Title-->
                                                 <h3 class="card-title align-items-start flex-column">
-                                                    <span class="card-label fw-bold text-dark">Olá Mundo</span>
-                                                    <span class="text-gray-400 mt-1 fw-semibold fs-6">Página Inicial</span>
+                                                    <span class="card-label fw-bold text-dark">Receitas x despesas</span>
+                                                    <span class="text-gray-400 mt-1 fw-semibold fs-6">Comparativo mensal de {{ $financeYear }}</span>
                                                 </h3>
                                                 <!--end::Title-->
                                             </div>
@@ -293,7 +350,7 @@
                                             <!--begin::Card body-->
                                             <div class="card-body pt-0">
                                                 <!--begin::Chart-->
-                                                <div id="kt_charts_widget_24" class="min-h-auto" style="height: 300px"></div>
+                                                <div id="finance_monthly_chart" class="min-h-auto" style="height: 360px"></div>
                                                 <!--end::Chart-->
                                             </div>
                                             <!--end::Card body-->
@@ -303,6 +360,36 @@
                                     <!--end::Col-->
                                 </div>
                                 <!--end::Row-->
+
+                                <div class="row g-5 g-xl-10 mt-0">
+                                    <div class="col-xl-6">
+                                        <div class="card card-flush h-xl-100">
+                                            <div class="card-header py-5">
+                                                <h3 class="card-title align-items-start flex-column">
+                                                    <span class="card-label fw-bold text-dark">Despesas por categoria</span>
+                                                    <span class="text-gray-400 mt-1 fw-semibold fs-6">Mês {{ str_pad($financeMonth, 2, '0', STR_PAD_LEFT) }}/{{ $financeYear }}</span>
+                                                </h3>
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div id="finance_category_chart" style="height: 320px"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-6">
+                                        <div class="card card-flush h-xl-100">
+                                            <div class="card-header py-5">
+                                                <h3 class="card-title align-items-start flex-column">
+                                                    <span class="card-label fw-bold text-dark">Lançamentos por status</span>
+                                                    <span class="text-gray-400 mt-1 fw-semibold fs-6">Distribuição do mês selecionado</span>
+                                                </h3>
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div id="finance_status_chart" style="height: 320px"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <!--end::Content container-->
                         </div>
@@ -310,7 +397,9 @@
                     </div>
                     <!--end::Content wrapper-->
                     <!--begin::Footer-->
-                    {{--    @include('assets.footer')--}}
+                    <br>
+                    <br>
+                       @include('assets.footer')
                     <!--end::Footer-->
                 </div>
                 <!--end:::Main-->
@@ -341,6 +430,155 @@
     <script src="{{ asset('assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
     <script src="{{ asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
     <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var chartData = @json($financeChartData);
+            var currencyFormatter = new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            });
+
+            function money(value) {
+                return currencyFormatter.format(Number(value || 0));
+            }
+
+            function normalizedDonut(labels, series) {
+                var hasData = Array.isArray(series) && series.some(function(value) {
+                    return Number(value) > 0;
+                });
+
+                if (hasData) {
+                    return {
+                        labels: labels,
+                        series: series.map(Number),
+                        colors: ['#009ef7', '#50cd89', '#f1416c', '#ffc700', '#7239ea', '#43ced7']
+                    };
+                }
+
+                return {
+                    labels: ['Sem dados'],
+                    series: [1],
+                    colors: ['#e4e6ef']
+                };
+            }
+
+            var monthlyChart = document.getElementById('finance_monthly_chart');
+            var categoryChart = document.getElementById('finance_category_chart');
+            var statusChart = document.getElementById('finance_status_chart');
+
+            if (monthlyChart && window.ApexCharts) {
+                new ApexCharts(monthlyChart, {
+                    series: [
+                        { name: 'Receitas', data: chartData.receitas },
+                        { name: 'Despesas', data: chartData.despesas }
+                    ],
+                    chart: {
+                        fontFamily: 'inherit',
+                        type: 'bar',
+                        height: 360,
+                        toolbar: { show: false }
+                    },
+                    plotOptions: {
+                        bar: {
+                            borderRadius: 4,
+                            columnWidth: '42%'
+                        }
+                    },
+                    dataLabels: { enabled: false },
+                    stroke: {
+                        show: true,
+                        width: 2,
+                        colors: ['transparent']
+                    },
+                    xaxis: {
+                        categories: chartData.months,
+                        labels: { style: { colors: '#a1a5b7', fontSize: '12px' } }
+                    },
+                    yaxis: {
+                        labels: {
+                            style: { colors: '#a1a5b7', fontSize: '12px' },
+                            formatter: function(value) {
+                                return money(value);
+                            }
+                        }
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(value) {
+                                return money(value);
+                            }
+                        }
+                    },
+                    colors: ['#50cd89', '#f1416c'],
+                    grid: {
+                        borderColor: '#eff2f5',
+                        strokeDashArray: 4
+                    }
+                }).render();
+            }
+
+            if (categoryChart && window.ApexCharts) {
+                var categoryData = normalizedDonut(chartData.categoryLabels, chartData.categorySeries);
+
+                new ApexCharts(categoryChart, {
+                    series: categoryData.series,
+                    chart: {
+                        fontFamily: 'inherit',
+                        type: 'donut',
+                        height: 320
+                    },
+                    labels: categoryData.labels,
+                    colors: categoryData.colors,
+                    legend: {
+                        position: 'bottom'
+                    },
+                    dataLabels: {
+                        formatter: function(value) {
+                            return value.toFixed(1) + '%';
+                        }
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(value) {
+                                return categoryData.labels.length === 1 && categoryData.labels[0] === 'Sem dados' ? 'Sem dados' : money(value);
+                            }
+                        }
+                    }
+                }).render();
+            }
+
+            if (statusChart && window.ApexCharts) {
+                var statusData = normalizedDonut(chartData.statusLabels, chartData.statusSeries);
+
+                new ApexCharts(statusChart, {
+                    series: statusData.series,
+                    chart: {
+                        fontFamily: 'inherit',
+                        type: 'donut',
+                        height: 320
+                    },
+                    labels: statusData.labels,
+                    colors: statusData.colors,
+                    legend: {
+                        position: 'bottom'
+                    },
+                    dataLabels: {
+                        formatter: function(value) {
+                            return value.toFixed(1) + '%';
+                        }
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(value) {
+                                return statusData.labels.length === 1 && statusData.labels[0] === 'Sem dados' ? 'Sem dados' : money(value);
+                            }
+                        }
+                    }
+                }).render();
+            }
+        });
+
+    </script>
     <!--end::Custom Javascript-->
     <!--end::Javascript-->
 </body>

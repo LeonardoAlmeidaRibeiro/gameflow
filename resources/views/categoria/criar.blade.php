@@ -36,6 +36,12 @@
                         </label>
                         <input type="text" class="form-control form-control-solid" id="nome" name="nome" />
                     </div>
+                    <div class="d-flex flex-column mb-7 fv-row">
+                        <label class="d-flex align-items-center fs-6 fw-bold form-label mb-2">
+                            <span>Ícone</span>
+                        </label>
+                        <input type="text" class="form-control form-control-solid" id="icone" name="icone" maxlength="20" placeholder="Ex.: 💰" />
+                    </div>
                     <!--end::Input group-->
 
                     <!--begin::Actions-->

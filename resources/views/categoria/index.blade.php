@@ -316,7 +316,10 @@
                                                         <tr id="tr_{{ $categoria->id }}">
                                                             <td>
                                                                 <a href="#" onClick="return abrirModalEditar({{ $categoria->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar">
-                                                                    <div id="celula_a_{{ $categoria->id }}">{{ $categoria->nome }}</div>
+                                                                    <div class="d-flex align-items-center gap-2">
+                                                                        <span id="celula_icone_{{ $categoria->id }}" class="fs-4">{{ $categoria->icone ?: '🏷️' }}</span>
+                                                                        <span id="celula_a_{{ $categoria->id }}">{{ $categoria->nome }}</span>
+                                                                    </div>
                                                                 </a>
                                                             </td>
                                                             <td class="text-end">
@@ -368,7 +371,7 @@
                     </div>
                     <!--end::Content wrapper-->
                     <!--begin::Footer-->
-                    {{-- @include('assets.footer')--}}
+                    @include('assets.footer')
                     <!--end::Footer-->
                 </div>
                 <!--end:::Main-->

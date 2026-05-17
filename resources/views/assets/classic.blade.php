@@ -156,7 +156,7 @@ License: For each use you must have a valid license purchased only from above li
 																<!--begin:Menu item-->
 																<div class="menu-item p-0 m-0">
 																	<!--begin:Menu link-->
-																	<a href="../../demo1/dist/dashboards/projects.html" class="menu-link">
+																	<a href="{{route('finance.index')}}" class="menu-link">
 																		<span class="menu-custom-icon d-flex flex-center flex-shrink-0 rounded w-40px h-40px me-3">
 																			<!--begin::Svg Icon | path: icons/duotune/abstract/abs045.svg-->
 																			<span class="svg-icon svg-icon-info svg-icon-1">
@@ -168,7 +168,7 @@ License: For each use you must have a valid license purchased only from above li
 																			<!--end::Svg Icon-->
 																		</span>
 																		<span class="d-flex flex-column">
-																			<span class="fs-6 fw-bold text-gray-800">Projects</span>
+																			<span class="fs-6 fw-bold text-gray-800">Finanças</span>
 																			<span class="fs-7 fw-semibold text-muted">Tasts, graphs & charts</span>
 																		</span>
 																	</a>
@@ -348,7 +348,7 @@ License: For each use you must have a valid license purchased only from above li
 														<div class="menu-item p-0 m-0">
 															<!--begin:Menu link-->
 															<a href="../../demo1/dist/dashboards/finance-performance.html" class="menu-link py-2">
-																<span class="menu-title">Finance Performance</span>
+																<span class="menu-title">Desempenho financeiro</span>
 															</a>
 															<!--end:Menu link-->
 														</div>
@@ -487,8 +487,8 @@ License: For each use you must have a valid license purchased only from above li
 																		<!--begin:Menu item-->
 																		<div class="menu-item p-0 m-0">
 																			<!--begin:Menu link-->
-																			<a href="../../demo1/dist/pages/user-profile/projects.html" class="menu-link">
-																				<span class="menu-title">Projects</span>
+																			<a href="{{ route('finance.index') }}" class="menu-link">
+																				<span class="menu-title">Finanças</span>
 																			</a>
 																			<!--end:Menu link-->
 																		</div>
@@ -1685,7 +1685,7 @@ License: For each use you must have a valid license purchased only from above li
 														</span>
 														<!--end::Svg Icon-->
 													</span>
-													<span class="menu-title">Projects</span>
+													<span class="menu-title">Finanças</span>
 													<span class="menu-arrow"></span>
 												</span>
 												<!--end:Menu link-->
@@ -1694,11 +1694,11 @@ License: For each use you must have a valid license purchased only from above li
 													<!--begin:Menu item-->
 													<div class="menu-item">
 														<!--begin:Menu link-->
-														<a class="menu-link" href="../../demo1/dist/apps/projects/list.html">
+														<a class="menu-link" href="{{ route('finance.index') }}">
 															<span class="menu-bullet">
 																<span class="bullet bullet-dot"></span>
 															</span>
-															<span class="menu-title">My Projects</span>
+															<span class="menu-title">Minhas Finanças</span>
 														</a>
 														<!--end:Menu link-->
 													</div>
@@ -3390,7 +3390,7 @@ License: For each use you must have a valid license purchased only from above li
 														</a>
 														<!--end::Item-->
 														<!--begin::Category title-->
-														<h3 class="fs-5 text-muted m-0 pt-5 pb-5" data-kt-search-element="category-title">Projects</h3>
+														<h3 class="fs-5 text-muted m-0 pt-5 pb-5" data-kt-search-element="category-title">Finanças</h3>
 														<!--end::Category title-->
 														<!--begin::Item-->
 														<a href="#" class="d-flex text-dark text-hover-primary align-items-center mb-5">
@@ -3744,7 +3744,7 @@ License: For each use you must have a valid license purchased only from above li
 														<!--begin::Option-->
 														<label>
 															<input type="radio" class="btn-check" name="type" value="projects" />
-															<span class="btn btn-sm btn-color-muted btn-active btn-active-primary px-4">Projects</span>
+															<span class="btn btn-sm btn-color-muted btn-active btn-active-primary px-4">Finanças</span>
 														</label>
 														<!--end::Option-->
 													</div>
@@ -3826,7 +3826,7 @@ License: For each use you must have a valid license purchased only from above li
 												<!--begin::Input group-->
 												<div class="pb-4 border-bottom">
 													<label class="form-check form-switch form-switch-sm form-check-custom form-check-solid flex-stack">
-														<span class="form-check-label text-gray-700 fs-6 fw-semibold ms-0 me-2">Projects</span>
+														<span class="form-check-label text-gray-700 fs-6 fw-semibold ms-0 me-2">Finanças</span>
 														<input class="form-check-input" type="checkbox" value="1" checked="checked" />
 													</label>
 												</div>
@@ -4517,7 +4517,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--end:Item-->
 											<!--begin:Item-->
 											<div class="col-6">
-												<a href="../../demo1/dist/apps/projects/list.html" class="d-flex flex-column flex-center h-100 p-6 bg-hover-light border-end">
+												<a href="{{ route('finance.index') }}" class="d-flex flex-column flex-center h-100 p-6 bg-hover-light border-end">
 													<!--begin::Svg Icon | path: icons/duotune/abstract/abs042.svg-->
 													<span class="svg-icon svg-icon-3x svg-icon-primary mb-2">
 														<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -4526,7 +4526,7 @@ License: For each use you must have a valid license purchased only from above li
 														</svg>
 													</span>
 													<!--end::Svg Icon-->
-													<span class="fs-5 fw-semibold text-gray-800 mb-0">Projects</span>
+													<span class="fs-5 fw-semibold text-gray-800 mb-0">Finanças</span>
 													<span class="fs-7 text-gray-400">Pending Tasks</span>
 												</a>
 											</div>
@@ -4700,7 +4700,7 @@ License: For each use you must have a valid license purchased only from above li
 										<!--begin::Menu item-->
 										<div class="menu-item px-5">
 											<a href="../../demo1/dist/apps/projects/list.html" class="menu-link px-5">
-												<span class="menu-text">My Projects</span>
+												<span class="menu-text">Minhas Finanças</span>
 												<span class="menu-badge">
 													<span class="badge badge-light-danger badge-circle fw-bold fs-7">3</span>
 												</span>
@@ -4935,11 +4935,11 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/dashboards/projects.html">
+												<a class="menu-link" href="{{route('finance.index')}}"">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">Projects</span>
+													<span class="menu-title">Finanças</span>
 												</a>
 												<!--end:Menu link-->
 											</div>
@@ -5036,7 +5036,7 @@ License: For each use you must have a valid license purchased only from above li
 														<span class="menu-bullet">
 															<span class="bullet bullet-dot"></span>
 														</span>
-														<span class="menu-title">Finance Performance</span>
+														<span class="menu-title">Desempenho financeiro</span>
 													</a>
 													<!--end:Menu link-->
 												</div>
@@ -5198,11 +5198,11 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/pages/user-profile/projects.html">
+												<a class="menu-link" href="{{ route('finance.index') }}">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">Projects</span>
+													<span class="menu-title">Finanças</span>
 												</a>
 												<!--end:Menu link-->
 											</div>
@@ -6929,7 +6929,7 @@ License: For each use you must have a valid license purchased only from above li
 												</span>
 												<!--end::Svg Icon-->
 											</span>
-											<span class="menu-title">Projects</span>
+											<span class="menu-title">Finanças</span>
 											<span class="menu-arrow"></span>
 										</span>
 										<!--end:Menu link-->
@@ -6942,7 +6942,7 @@ License: For each use you must have a valid license purchased only from above li
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">My Projects</span>
+													<span class="menu-title">Minhas Finanças</span>
 												</a>
 												<!--end:Menu link-->
 											</div>
@@ -8549,7 +8549,7 @@ License: For each use you must have a valid license purchased only from above li
 														<span class="fs-2hx fw-bold text-white me-2 lh-1 ls-n2">69</span>
 														<!--end::Amount-->
 														<!--begin::Subtitle-->
-														<span class="text-white opacity-75 pt-1 fw-semibold fs-6">Active Projects</span>
+														<span class="text-white opacity-75 pt-1 fw-semibold fs-6">Active Finanças</span>
 														<!--end::Subtitle-->
 													</div>
 													<!--end::Title-->
@@ -8654,7 +8654,7 @@ License: For each use you must have a valid license purchased only from above li
 														</div>
 														<!--end::Info-->
 														<!--begin::Subtitle-->
-														<span class="text-gray-400 pt-1 fw-semibold fs-6">Projects Earnings in April</span>
+														<span class="text-gray-400 pt-1 fw-semibold fs-6">Finanças Earnings in April</span>
 														<!--end::Subtitle-->
 													</div>
 													<!--end::Title-->
@@ -10816,7 +10816,7 @@ License: For each use you must have a valid license purchased only from above li
 												<div class="card-header pt-7">
 													<!--begin::Title-->
 													<h3 class="card-title align-items-start flex-column">
-														<span class="card-label fw-bold text-gray-800">Projects Stats</span>
+														<span class="card-label fw-bold text-gray-800">Finanças Stats</span>
 														<span class="text-gray-400 mt-1 fw-semibold fs-6">Updated 37 minutes ago</span>
 													</h3>
 													<!--end::Title-->

@@ -1,7 +1,7 @@
 ﻿<div class="modal fade" id="modal_editar_financeiro" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
-            <form method="POST" id="form_editar_financeiro">
+            <form method="POST" id="form_editar_financeiro" data-finance-form novalidate>
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="mes" id="editar_mes" value="{{ $financeMonth }}" />
@@ -39,7 +39,7 @@
                             <select name="categoria_id" id="editar_categoria_id" class="form-select form-select-solid">
                                 <option value="">Selecione</option>
                                 @foreach ($financeCategories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->nome }}</option>
+                                    <option value="{{ $category->id }}">{{ $category->icone ?: '🏷️' }} {{ $category->nome }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -65,7 +65,12 @@
 
                         <div class="col-md-6">
                             <label class="form-label">Forma de pagamento</label>
-                            <input type="text" name="forma_pagamento" id="editar_forma_pagamento" class="form-control form-control-solid" />
+                            <select name="payment_method_id" id="editar_payment_method_id" class="form-select form-select-solid">
+                                <option value="">Selecione</option>
+                                @foreach ($paymentMethods as $paymentMethod)
+                                    <option value="{{ $paymentMethod->id }}">{{ $paymentMethod->display_name }} - {{ $paymentMethod->tipo_label }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="col-md-6">

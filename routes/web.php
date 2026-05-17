@@ -21,7 +21,7 @@ Route::get('/new-password', [AuthenticationController::class, 'newPassword'])->n
 Route::post('/new-password', [AuthenticationController::class, 'updatePassword'])->name('new-password.update');
 
 Route::middleware('auth')->group(function () {
-    Route::view('/index', 'index')->name('index');
+    Route::get('/index', [FinanceController::class, 'dashboard'])->name('index');
     Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
     Route::get('/account', [AccountController::class, 'show'])->name('account.show');
     Route::get('/account/photo', [AccountController::class, 'photo'])->name('account.photo');
@@ -31,6 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/finance', [FinanceController::class, 'store'])->name('finance.store');
     Route::put('/finance/{finance}', [FinanceController::class, 'update'])->name('finance.update');
     Route::delete('/finance/{finance}', [FinanceController::class, 'destroy'])->name('finance.destroy');
+    Route::post('/finance/payment-methods', [FinanceController::class, 'storePaymentMethod'])->name('finance.payment-methods.store');
+    Route::put('/finance/payment-methods/{paymentMethod}', [FinanceController::class, 'updatePaymentMethod'])->name('finance.payment-methods.update');
+    Route::delete('/finance/payment-methods/{paymentMethod}', [FinanceController::class, 'destroyPaymentMethod'])->name('finance.payment-methods.destroy');
     Route::get('/categoria', [CategoriaController::class, 'index'])->name('categoria.index');
     Route::post('/categoria', [CategoriaController::class, 'store'])->name('categoria.store');
     Route::put('/categoria/{categoria}', [CategoriaController::class, 'update'])->name('categoria.update');

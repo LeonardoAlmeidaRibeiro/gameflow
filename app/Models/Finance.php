@@ -24,6 +24,7 @@ class Finance extends Model
         'data_vencimento',
         'data_pagamento',
         'forma_pagamento',
+        'payment_method_id',
         'recorrente',
         'recorrencia_tipo',
         'recorrencia_valor_tipo',
@@ -49,6 +50,11 @@ class Finance extends Model
     public function categoria()
     {
         return $this->belongsTo(Categoria::class, 'categoria_id');
+    }
+
+    public function paymentMethod()
+    {
+        return $this->belongsTo(FinancePaymentMethod::class, 'payment_method_id');
     }
 
     public function recorrenciaOrigem()

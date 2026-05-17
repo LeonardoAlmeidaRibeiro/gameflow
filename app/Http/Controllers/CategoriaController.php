@@ -64,7 +64,8 @@ class CategoriaController extends Controller
 
             if ($categoria) {
                 $data = [
-                    'nome' => $request->nome
+                    'nome' => $request->nome,
+                    'icone' => $request->icone,
                 ];
                 $dados = implode(" ", $data);
                 $categoria->update($data);
