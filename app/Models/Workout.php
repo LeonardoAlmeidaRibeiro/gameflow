@@ -10,6 +10,7 @@ class Workout extends Model
         'user_id',
         'nome',
         'objetivo',
+        'status',
     ];
 
     public function user()
@@ -20,5 +21,10 @@ class Workout extends Model
     public function trainingDivisions()
     {
         return $this->hasMany(TrainingDivision::class);
+    }
+
+    public function workoutLogs()
+    {
+        return $this->hasManyThrough(WorkoutLog::class, TrainingDivision::class);
     }
 }

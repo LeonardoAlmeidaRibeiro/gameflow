@@ -31,7 +31,18 @@ class AccountController extends Controller
             }
         }
 
-        return $this->photoResponse(public_path('assets/media/avatars/300-1.jpg'));
+        $fallbacks = [
+            public_path('assets/imagens/avatar.png'),
+            public_path('assets/media/avatars/300-1.jpg'),
+        ];
+
+        foreach ($fallbacks as $fallback) {
+            if (is_file($fallback)) {
+                return $this->photoResponse($fallback);
+            }
+        }
+
+        abort(404);
     }
 
     public function update(Request $request)

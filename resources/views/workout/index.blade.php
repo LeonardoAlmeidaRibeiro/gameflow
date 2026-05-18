@@ -246,7 +246,19 @@
     $workoutProgress = $workoutProgress ?? collect();
     $trainingDivisions = $trainingDivisions ?? collect();
     $exercises = $exercises ?? collect();
+    $exerciseCategories = $exerciseCategories ?? collect();
     $workoutRoutines = $workoutRoutines ?? collect();
+    $workoutLogs = $workoutLogs ?? collect();
+    $workoutChartData = $workoutChartData ?? [
+    'divisionLabels' => [],
+    'divisionSeries' => [],
+    'muscleLabels' => [],
+    'muscleSeries' => [],
+    'progressLabels' => [],
+    'weightSeries' => [],
+    'kcalSeries' => [],
+    ];
+    $workoutChartJson = json_encode($workoutChartData, JSON_UNESCAPED_UNICODE) ?: '{}';
     $latestProgress = $latestProgress ?? null;
     $totalSeries = $exercises->sum(function ($exercise) {
     return (int) ($exercise->series ?? 0);
@@ -338,6 +350,14 @@
                                     </div>
                                 </div>
                                 <!--end::Navbar-->
+                                <div class="d-flex flex-wrap justify-content-end gap-3 mb-5">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_adicionar_division">
+                                        Adicionar divisão
+                                    </button>
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_registrar_treino">
+                                        Registrar treino de hoje
+                                    </button>
+                                </div>
                                 <div class="row g-5 g-xl-8 mb-5 mb-xl-10">
                                     <div class="col-md-3">
                                         <div class="card h-100">
@@ -441,7 +461,15 @@
                                                                 <td>{{ data_get($routine, 'trainingDivision.nome', '-') }}</td>
                                                                 <td>{{ data_get($routine, 'trainingDivision.workout.nome', '-') }}</td>
                                                                 <td class="text-end">
-                                                                    <button type="button" class="btn btn-sm btn-light-primary me-2 js-edit-routine" data-routine='@json($routine)'>Editar</button>
+                                                                    <button type="button" class="btn btn-sm btn-light-primary me-2 js-edit-routine" data-routine='@json($routine)'>
+                                                                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                                                                        <span class="svg-icon svg-icon-2">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                                <path opacity="0.3" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="black" />
+                                                                                <path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="black" />
+                                                                            </svg>
+                                                                        </span>
+                                                                        <!--end::Svg Icon-->Editar</button>
                                                                     <form action="{{ route('workouts.routines.destroy', $routine) }}" method="POST" class="d-inline js-delete-form" data-message="Excluir esta rotina?">
                                                                         @csrf
                                                                         @method('DELETE')
@@ -471,11 +499,93 @@
                                     </div>
                                 </div>
 
+                                <div class="row g-5 g-xl-8 mb-5 mb-xl-10">
+                                    <div class="col-xl-4">
+                                        <div class="card h-100">
+                                            <div class="card-header border-0">
+                                                <h3 class="card-title fw-bold text-dark">Exercícios por divisão</h3>
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div id="workout_division_chart" style="min-height: 280px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <div class="card h-100">
+                                            <div class="card-header border-0">
+                                                <h3 class="card-title fw-bold text-dark">Volume por grupo muscular</h3>
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div id="workout_muscle_chart" style="min-height: 280px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <div class="card h-100">
+                                            <div class="card-header border-0">
+                                                <h3 class="card-title fw-bold text-dark">Evolução corporal</h3>
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div id="workout_progress_chart" style="min-height: 280px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card mb-5 mb-xl-10">
+                                    <div class="card-header border-0">
+                                        <h3 class="card-title fw-bold text-dark">Check-ins recentes</h3>
+                                        <div class="card-toolbar">
+                                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modal_registrar_treino">Registrar treino de hoje</button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body pt-0">
+                                        <div class="table-responsive">
+                                            <table class="table align-middle table-row-dashed gy-5">
+                                                <thead>
+                                                    <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase">
+                                                        <th>Data</th>
+                                                        <th>Treino feito</th>
+                                                        <th>Sensação/esforço</th>
+                                                        <th>Exercícios</th>
+                                                        <th>Observação</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="fw-semibold text-gray-700">
+                                                    @forelse ($workoutLogs as $log)
+                                                    <tr>
+                                                        <td class="fw-bold text-dark">{{ optional($log->data_treino)->format('d/m/Y') }}</td>
+                                                        <td>
+                                                            <div class="fw-bold text-dark">{{ $log->nome_treino }}</div>
+                                                            <div class="text-gray-500 fs-7">{{ $log->dia_semana ?? '-' }}</div>
+                                                        </td>
+                                                        <td>
+                                                            @if ($log->sensacao_esforco)
+                                                            <span class="badge badge-light-info">{{ $log->sensacao_esforco }}/10</span>
+                                                            @else
+                                                            -
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $log->exercises->count() }}</td>
+                                                        <td>{{ $log->observacao ?? '-' }}</td>
+                                                    </tr>
+                                                    @empty
+                                                    <tr>
+                                                        <td colspan="5" class="text-center text-gray-500 py-10">Nenhum treino registrado ainda.</td>
+                                                    </tr>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="card mb-5 mb-xl-10">
                                     <div class="card-header border-0">
                                         <h3 class="card-title fw-bold text-dark">Treinos e divisões</h3>
-                                        <div class="card-toolbar">
-                                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal_adicionar_workout">Adicionar</button>
+                                        <div class="card-toolbar d-flex gap-3">
+                                            <button type="button" class="btn btn-sm btn-light-primary" data-bs-toggle="modal" data-bs-target="#modal_adicionar_division">Adicionar divisão</button>
+                                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal_adicionar_workout">Adicionar treino</button>
                                         </div>
                                     </div>
                                     <div class="card-body pt-0">
@@ -485,6 +595,7 @@
                                                     <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase">
                                                         <th>Treino</th>
                                                         <th>Objetivo</th>
+                                                        <th>Status</th>
                                                         <th>Divisões</th>
                                                         <th>Exercícios</th>
                                                         <th>Criado em</th>
@@ -493,9 +604,27 @@
                                                 </thead>
                                                 <tbody class="fw-semibold text-gray-700">
                                                     @forelse ($workouts as $workout)
+                                                    @php
+                                                    $workoutStatus = $workout->status ?? 'ativo';
+                                                    $statusClasses = [
+                                                    'ativo' => 'badge-light-success',
+                                                    'pausado' => 'badge-light-warning',
+                                                    'finalizado' => 'badge-light-secondary',
+                                                    ];
+                                                    $statusLabels = [
+                                                    'ativo' => 'Ativo',
+                                                    'pausado' => 'Pausado',
+                                                    'finalizado' => 'Finalizado',
+                                                    ];
+                                                    @endphp
                                                     <tr>
                                                         <td class="fw-bold text-dark">{{ $workout->nome }}</td>
                                                         <td>{{ $workout->objetivo ?? '-' }}</td>
+                                                        <td>
+                                                            <span class="badge {{ $statusClasses[$workoutStatus] ?? 'badge-light-primary' }}">
+                                                                {{ $statusLabels[$workoutStatus] ?? ucfirst($workoutStatus) }}
+                                                            </span>
+                                                        </td>
                                                         <td>
                                                             @forelse ($workout->trainingDivisions as $division)
                                                             <span class="badge badge-light-primary me-1 mb-1">{{ $division->nome }}</span>
@@ -506,7 +635,15 @@
                                                         <td>{{ $workout->trainingDivisions->sum(fn ($division) => $division->exercises->count()) }}</td>
                                                         <td>{{ optional($workout->created_at)->format('d/m/Y') }}</td>
                                                         <td class="text-end">
-                                                            <button type="button" class="btn btn-sm btn-light-primary me-2 js-edit-workout" data-workout='@json($workout)'>Editar</button>
+                                                            <button type="button" class="btn btn-sm btn-light-primary me-2 js-edit-workout" data-workout='@json($workout)'>
+                                                                <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                                                                <span class="svg-icon svg-icon-2">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                        <path opacity="0.3" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="black" />
+                                                                        <path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="black" />
+                                                                    </svg>
+                                                                </span>
+                                                                <!--end::Svg Icon-->Editar</button>
                                                             <form action="{{ route('workouts.destroy', $workout) }}" method="POST" class="d-inline js-delete-form" data-message="Excluir este treino e seus vínculos?">
                                                                 @csrf
                                                                 @method('DELETE')
@@ -525,7 +662,7 @@
                                                     </tr>
                                                     @empty
                                                     <tr>
-                                                        <td colspan="6" class="text-center text-gray-500 py-10">Nenhum treino cadastrado.</td>
+                                                        <td colspan="7" class="text-center text-gray-500 py-10">Nenhum treino cadastrado.</td>
                                                     </tr>
                                                     @endforelse
                                                 </tbody>
@@ -561,6 +698,21 @@
                                                     @forelse ($exercises as $exercise)
                                                     <tr>
                                                         <td class="fw-bold text-dark">{{ $exercise->nome }}</td>
+                                                        <td>
+                                                            @if ($exercise->exerciseCategory)
+                                                            <div class="d-flex align-items-center gap-2">
+                                                                @if ($exercise->exerciseCategory->imagem)
+                                                                <img src="{{ asset('storage/' . $exercise->exerciseCategory->imagem) }}" class="rounded" width="34" height="34" style="object-fit: cover;" alt="{{ $exercise->exerciseCategory->nome }}">
+                                                                @endif
+                                                                <div>
+                                                                    <div class="fw-bold text-dark">{{ $exercise->exerciseCategory->nome }}</div>
+                                                                    <div class="text-gray-500 fs-7">{{ data_get($exercise, 'exerciseCategory.muscleGroup.nome', '-') }}</div>
+                                                                </div>
+                                                            </div>
+                                                            @else
+                                                            -
+                                                            @endif
+                                                        </td>
                                                         <td>{{ data_get($exercise, 'trainingDivision.workout.nome', '-') }}</td>
                                                         <td>{{ data_get($exercise, 'trainingDivision.nome', '-') }}</td>
                                                         <td>{{ $exercise->series ?? '-' }}</td>
@@ -569,7 +721,15 @@
                                                         <td>{{ $exercise->tempo_descanso ? $exercise->tempo_descanso . 's' : '-' }}</td>
                                                         <td>{{ $exercise->observacao ?? '-' }}</td>
                                                         <td class="text-end">
-                                                            <button type="button" class="btn btn-sm btn-light-primary me-2 js-edit-exercise" data-exercise='@json($exercise)'>Editar</button>
+                                                            <button type="button" class="btn btn-sm btn-light-primary me-2 js-edit-exercise" data-exercise='@json($exercise)'>
+                                                                <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                                                                <span class="svg-icon svg-icon-2">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                        <path opacity="0.3" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="black" />
+                                                                        <path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="black" />
+                                                                    </svg>
+                                                                </span>
+                                                                <!--end::Svg Icon-->Editar</button>
                                                             <form action="{{ route('workouts.exercises.destroy', $exercise) }}" method="POST" class="d-inline js-delete-form" data-message="Excluir este exercício?">
                                                                 @csrf
                                                                 @method('DELETE')
@@ -588,7 +748,7 @@
                                                     </tr>
                                                     @empty
                                                     <tr>
-                                                        <td colspan="9" class="text-center text-gray-500 py-10">Nenhum exercício cadastrado.</td>
+                                                        <td colspan="10" class="text-center text-gray-500 py-10">Nenhum exercício cadastrado.</td>
                                                     </tr>
                                                     @endforelse
                                                 </tbody>
@@ -632,7 +792,15 @@
                                                         </td>
                                                         <td>{{ optional($division->created_at)->format('d/m/Y') }}</td>
                                                         <td class="text-end">
-                                                            <button type="button" class="btn btn-sm btn-light-primary me-2 js-edit-division" data-division='@json($division)'>Editar</button>
+                                                            <button type="button" class="btn btn-sm btn-light-primary me-2 js-edit-division" data-division='@json($division)'>
+                                                                <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                                                                <span class="svg-icon svg-icon-2">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                        <path opacity="0.3" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="black" />
+                                                                        <path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="black" />
+                                                                    </svg>
+                                                                </span>
+                                                                <!--end::Svg Icon-->Editar</button>
                                                             <form action="{{ route('workouts.divisions.destroy', $division) }}" method="POST" class="d-inline js-delete-form" data-message="Excluir esta divisão e seus vínculos?">
                                                                 @csrf
                                                                 @method('DELETE')
@@ -697,7 +865,14 @@
                                                         <td>{{ $progress->proteina ?? '-' }}</td>
                                                         <td>{{ $progress->gordura ?? '-' }}</td>
                                                         <td class="text-end">
-                                                            <button type="button" class="btn btn-sm btn-light-primary me-2 js-edit-progress" data-progress='@json($progress)'>Editar</button>
+                                                            <button type="button" class="btn btn-sm btn-light-primary me-2 js-edit-progress" data-progress='@json($progress)'> <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                                                                        <span class="svg-icon svg-icon-2">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                                <path opacity="0.3" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="black" />
+                                                                                <path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="black" />
+                                                                            </svg>
+                                                                        </span>
+                                                                        <!--end::Svg Icon-->Editar</button>
                                                             <form action="{{ route('workouts.progress.destroy', $progress) }}" method="POST" class="d-inline js-delete-form" data-message="Excluir este progresso?">
                                                                 @csrf
                                                                 @method('DELETE')
@@ -773,6 +948,121 @@
             });
         }
 
+        function renderWorkoutCharts() {
+            if (typeof ApexCharts === 'undefined') {
+                return;
+            }
+
+            var chartData = {!!$workoutChartJson!!};
+            var emptyLabel = ['Sem dados'];
+
+            var divisionElement = document.getElementById('workout_division_chart');
+            if (divisionElement) {
+                new ApexCharts(divisionElement, {
+                    chart: {
+                        type: 'bar'
+                        , height: 280
+                        , toolbar: {
+                            show: false
+                        }
+                    }
+                    , series: [{
+                        name: 'Exercícios'
+                        , data: chartData.divisionSeries.length ? chartData.divisionSeries : [0]
+                    }]
+                    , xaxis: {
+                        categories: chartData.divisionLabels.length ? chartData.divisionLabels : emptyLabel
+                        , labels: {
+                            rotate: -20
+                        }
+                    }
+                    , colors: ['#009ef7']
+                    , plotOptions: {
+                        bar: {
+                            borderRadius: 4
+                            , columnWidth: '48%'
+                        }
+                    }
+                    , dataLabels: {
+                        enabled: false
+                    }
+                    , yaxis: {
+                        min: 0
+                        , forceNiceScale: true
+                    }
+                }).render();
+            }
+
+            var muscleElement = document.getElementById('workout_muscle_chart');
+            if (muscleElement) {
+                new ApexCharts(muscleElement, {
+                    chart: {
+                        type: 'donut'
+                        , height: 280
+                    }
+                    , series: chartData.muscleSeries.length ? chartData.muscleSeries : [1]
+                    , labels: chartData.muscleLabels.length ? chartData.muscleLabels : emptyLabel
+                    , colors: ['#50cd89', '#f1416c', '#ffc700', '#7239ea', '#009ef7', '#7e8299', '#181c32']
+                    , legend: {
+                        position: 'bottom'
+                    }
+                    , dataLabels: {
+                        enabled: false
+                    }
+                }).render();
+            }
+
+            var progressElement = document.getElementById('workout_progress_chart');
+            if (progressElement) {
+                new ApexCharts(progressElement, {
+                    chart: {
+                        type: 'line'
+                        , height: 280
+                        , toolbar: {
+                            show: false
+                        }
+                    }
+                    , series: [{
+                            name: 'Peso'
+                            , data: chartData.weightSeries.length ? chartData.weightSeries : [0]
+                        }
+                        , {
+                            name: 'Meta kcal'
+                            , data: chartData.kcalSeries.length ? chartData.kcalSeries : [0]
+                        }
+                    ]
+                    , xaxis: {
+                        categories: chartData.progressLabels.length ? chartData.progressLabels : emptyLabel
+                    }
+                    , colors: ['#f1416c', '#009ef7']
+                    , stroke: {
+                        curve: 'smooth'
+                        , width: 3
+                    }
+                    , markers: {
+                        size: 4
+                    }
+                    , dataLabels: {
+                        enabled: false
+                    }
+                    , yaxis: [{
+                            title: {
+                                text: 'Peso'
+                            }
+                            , forceNiceScale: true
+                        }
+                        , {
+                            opposite: true
+                            , title: {
+                                text: 'Kcal'
+                            }
+                            , forceNiceScale: true
+                        }
+                    ]
+                }).render();
+            }
+        }
+
         function setWorkoutFormValues(form, data) {
             Object.keys(data || {}).forEach(function(key) {
                 var field = form.querySelector('[name="' + key + '"]');
@@ -781,7 +1071,7 @@
                     return;
                 }
 
-                var value = data[key] ? ? '';
+                var value = data[key] ?? '';
 
                 if (field.type === 'date' && String(value).indexOf('T') !== -1) {
                     value = String(value).split('T')[0];
@@ -807,7 +1097,63 @@
             }
         }
 
+        function updateExerciseCategoryPreview(select) {
+            var selectedOption = select.options[select.selectedIndex];
+            var form = select.closest('form');
+            var preview = form ? form.querySelector('.js-exercise-category-preview') : null;
+            var nameField = form ? form.querySelector('[name="nome"]') : null;
+            var observationField = form ? form.querySelector('[name="observacao"]') : null;
+
+            if (!selectedOption || !selectedOption.value || !preview) {
+                if (preview) {
+                    preview.classList.add('d-none');
+                }
+
+                return;
+            }
+
+            if (nameField && selectedOption.dataset.name && !String(nameField.value || '').trim()) {
+                nameField.value = selectedOption.dataset.name;
+            }
+
+            if (observationField && selectedOption.dataset.description && !String(observationField.value || '').trim()) {
+                observationField.value = selectedOption.dataset.description;
+            }
+
+            var image = preview.querySelector('.js-exercise-category-image');
+            var name = preview.querySelector('.js-exercise-category-name');
+            var group = preview.querySelector('.js-exercise-category-group');
+            var description = preview.querySelector('.js-exercise-category-description');
+
+            if (name) {
+                name.textContent = selectedOption.dataset.name || '';
+            }
+
+            if (group) {
+                group.textContent = selectedOption.dataset.group || '';
+            }
+
+            if (description) {
+                description.textContent = selectedOption.dataset.description || '';
+            }
+
+            if (image) {
+                if (selectedOption.dataset.image) {
+                    image.src = selectedOption.dataset.image;
+                    image.alt = selectedOption.dataset.name || '';
+                    image.classList.remove('d-none');
+                } else {
+                    image.removeAttribute('src');
+                    image.classList.add('d-none');
+                }
+            }
+
+            preview.classList.remove('d-none');
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
+            renderWorkoutCharts();
+
             document.querySelectorAll('.js-workout-form').forEach(function(form) {
                 form.addEventListener('submit', function(event) {
                     var requiredField = Array.from(form.querySelectorAll('[data-label]')).find(function(field) {
@@ -822,6 +1168,14 @@
                     requiredField.focus();
                     workoutAlert('warning', 'Campo obrigatório', 'Preencha o campo ' + requiredField.getAttribute('data-label') + '.');
                 });
+            });
+
+            document.querySelectorAll('.js-exercise-category-select').forEach(function(select) {
+                select.addEventListener('change', function() {
+                    updateExerciseCategoryPreview(select);
+                });
+
+                updateExerciseCategoryPreview(select);
             });
 
             document.querySelectorAll('.js-delete-form').forEach(function(form) {
@@ -863,6 +1217,12 @@
                 button.addEventListener('click', function() {
                     var data = JSON.parse(button.getAttribute('data-exercise'));
                     openWorkoutEditModal('form_editar_exercise', 'modal_editar_exercise', data.id, data);
+                    var form = document.getElementById('form_editar_exercise');
+                    var categorySelect = form ? form.querySelector('.js-exercise-category-select') : null;
+
+                    if (categorySelect) {
+                        updateExerciseCategoryPreview(categorySelect);
+                    }
                 });
             });
 

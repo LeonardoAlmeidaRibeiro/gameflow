@@ -7,6 +7,7 @@ use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\WorkoutController;
 use App\Http\Controllers\MuscleGroupController;
+use App\Http\Controllers\ExerciseCategoryController;
 
 
 
@@ -60,9 +61,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/workouts/routines', [WorkoutController::class, 'storeRoutine'])->name('workouts.routines.store');
     Route::put('/workouts/routines/{routine}', [WorkoutController::class, 'updateRoutine'])->name('workouts.routines.update');
     Route::delete('/workouts/routines/{routine}', [WorkoutController::class, 'destroyRoutine'])->name('workouts.routines.destroy');
+    Route::post('/workouts/checkins', [WorkoutController::class, 'storeCheckin'])->name('workouts.checkins.store');
 
     Route::get('/muscle-group', [MuscleGroupController::class, 'index'])->name('muscle-group.index');
     Route::post('/muscle-group', [MuscleGroupController::class, 'store'])->name('muscle-group.store');
     Route::put('/muscle-group/{muscleGroup}', [MuscleGroupController::class, 'update'])->name('muscle-group.update');
     Route::delete('/muscle-group/{muscleGroup}', [MuscleGroupController::class, 'destroy'])->name('muscle-group.destroy');
+
+    Route::get('/exercise_categories', [ExerciseCategoryController::class, 'index'])->name('exercise_categories.index');
+    Route::post('/exercise_categories', [ExerciseCategoryController::class, 'store'])->name('exercise_categories.store');
+    Route::put('/exercise_categories/{exerciseCategory}', [ExerciseCategoryController::class, 'update'])->name('exercise_categories.update');
+    Route::delete('/exercise_categories/{exerciseCategory}', [ExerciseCategoryController::class, 'destroy'])->name('exercise_categories.destroy');
 });

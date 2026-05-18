@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
+use App\Models\Exercise;
 use App\Models\Finance;
 use App\Models\FinancePaymentMethod;
+use App\Models\TrainingDivision;
+use App\Models\WorkoutProgress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -79,6 +82,7 @@ class FinanceController extends Controller
             ->get();
 
         $financeAlerts = $this->dashboardFinanceAlerts($user->id, $today, (float) $totalReceitas, (float) $totalDespesas);
+        $workoutChartData = $this->dashboardWorkoutChartData($user->id);
 
         return view('index', [
             'financeYear' => $year,
@@ -98,6 +102,7 @@ class FinanceController extends Controller
                 'statusLabels' => $statusTotals->pluck('status')->map(fn ($status) => $statusLabels[$status] ?? ucfirst($status))->values(),
                 'statusSeries' => $statusTotals->pluck('total')->map(fn ($value) => (float) $value)->values(),
             ],
+            'workoutChartData' => $workoutChartData,
         ]);
     }
 
@@ -471,6 +476,61 @@ class FinanceController extends Controller
         }
 
         return $alerts;
+    }
+
+    private function dashboardWorkoutChartData(int $userId): array
+    {
+        $trainingDivisions = TrainingDivision::query()
+            ->with(['exercises.exerciseCategory.muscleGroup', 'workout'])
+            ->whereHas('workout', fn ($query) => $query->where('user_id', $userId))
+            ->orderBy('nome')
+            ->get();
+
+        $exercises = Exercise::query()
+            ->with(['exerciseCategory.muscleGroup', 'trainingDivision.workout'])
+            ->whereHas('trainingDivision.workout', fn ($query) => $query->where('user_id', $userId))
+            ->get();
+
+        $workoutProgress = WorkoutProgress::query()
+            ->where('user_id', $userId)
+            ->orderBy('data_registro')
+            ->get();
+
+        $exercisesByDivision = $trainingDivisions
+            ->map(fn (TrainingDivision $division) => [
+                'label' => $division->nome,
+                'total' => $division->exercises->count(),
+            ])
+            ->values();
+
+        $volumeByMuscleGroup = $exercises
+            ->groupBy(fn (Exercise $exercise) => data_get($exercise, 'exerciseCategory.muscleGroup.nome', 'Sem grupo'))
+            ->map(fn ($items, $label) => [
+                'label' => $label,
+                'total' => $items->sum(function (Exercise $exercise) {
+                    return (int) ($exercise->series ?? 0) * (int) ($exercise->repeticoes ?? 0);
+                }),
+            ])
+            ->sortByDesc('total')
+            ->values();
+
+        $progressTimeline = $workoutProgress
+            ->map(fn (WorkoutProgress $progress) => [
+                'label' => Carbon::parse($progress->data_registro)->format('d/m'),
+                'peso' => $progress->peso ? (float) $progress->peso : null,
+                'meta_kcal' => $progress->meta_kcal ? (int) $progress->meta_kcal : null,
+            ])
+            ->values();
+
+        return [
+            'divisionLabels' => $exercisesByDivision->pluck('label')->values(),
+            'divisionSeries' => $exercisesByDivision->pluck('total')->values(),
+            'muscleLabels' => $volumeByMuscleGroup->pluck('label')->values(),
+            'muscleSeries' => $volumeByMuscleGroup->pluck('total')->values(),
+            'progressLabels' => $progressTimeline->pluck('label')->values(),
+            'weightSeries' => $progressTimeline->pluck('peso')->values(),
+            'kcalSeries' => $progressTimeline->pluck('meta_kcal')->values(),
+        ];
     }
 }
 

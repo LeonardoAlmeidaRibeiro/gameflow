@@ -12,6 +12,7 @@ class WorkoutLog extends Model
         'data_treino',
         'nome_treino',
         'dia_semana',
+        'sensacao_esforco',
         'observacao',
     ];
 

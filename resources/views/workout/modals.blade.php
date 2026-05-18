@@ -18,7 +18,13 @@
                 <label class="form-label required">Nome</label>
                 <input type="text" name="nome" class="form-control mb-5" data-label="Nome">
                 <label class="form-label">Objetivo</label>
-                <input type="text" name="objetivo" class="form-control">
+                <input type="text" name="objetivo" class="form-control mb-5">
+                <label class="form-label required">Status</label>
+                <select name="status" class="form-select" data-label="Status">
+                    <option value="ativo" selected>Ativo</option>
+                    <option value="pausado">Pausado</option>
+                    <option value="finalizado">Finalizado</option>
+                </select>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
@@ -41,11 +47,79 @@
                 <label class="form-label required">Nome</label>
                 <input type="text" name="nome" class="form-control mb-5" data-label="Nome">
                 <label class="form-label">Objetivo</label>
-                <input type="text" name="objetivo" class="form-control">
+                <input type="text" name="objetivo" class="form-control mb-5">
+                <label class="form-label required">Status</label>
+                <select name="status" class="form-select" data-label="Status">
+                    <option value="ativo">Ativo</option>
+                    <option value="pausado">Pausado</option>
+                    <option value="finalizado">Finalizado</option>
+                </select>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
                 <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_registrar_treino" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <form class="modal-content js-workout-form" method="POST" action="{{ route('workouts.checkins.store') }}">
+            @csrf
+            <div class="modal-header">
+                <h2 class="fw-bold">Registrar treino de hoje</h2>
+                <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" data-bs-dismiss="modal">x</button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-5">
+                    <div class="col-md-6">
+                        <label class="form-label required">Treino feito</label>
+                        <select name="training_division_id" class="form-select" data-label="Treino feito">
+                            <option value="">Selecione</option>
+                            @foreach ($trainingDivisions as $division)
+                                <option value="{{ $division->id }}">{{ data_get($division, 'workout.nome') }} - {{ $division->nome }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label required">Data</label>
+                        <input type="date" name="data_treino" class="form-control" value="{{ now()->toDateString() }}" data-label="Data">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Dia</label>
+                        <select name="dia_semana" class="form-select">
+                            <option value="">Selecione</option>
+                            @foreach ($weekDays as $day)
+                                <option value="{{ $day }}" @selected(now()->locale('pt_BR')->isoFormat('dddd') === mb_strtolower(str_replace('-feira', '', $day)))>{{ $day }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Carga usada</label>
+                        <input type="number" name="carga" class="form-control" min="0" step="0.01">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Séries</label>
+                        <input type="number" name="series" class="form-control" min="1">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Repetições</label>
+                        <input type="number" name="repeticoes" class="form-control" min="1">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Sensação/esforço</label>
+                        <input type="number" name="sensacao_esforco" class="form-control" min="1" max="10" placeholder="1 a 10">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Observação</label>
+                        <textarea name="observacao" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Registrar</button>
             </div>
         </form>
     </div>

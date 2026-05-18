@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Exercise;
+use App\Models\ExerciseCategory;
 use App\Models\TrainingDivision;
 use App\Models\Workout;
+use App\Models\WorkoutLog;
+use App\Models\WorkoutLogExercise;
 use App\Models\WorkoutProgress;
 use App\Models\WorkoutRoutine;
 use Illuminate\Http\Request;
@@ -18,7 +21,7 @@ class WorkoutController extends Controller
         $user = $request->user();
 
         $workouts = Workout::query()
-            ->with(['trainingDivisions.exercises', 'trainingDivisions.workoutRoutines'])
+            ->with(['trainingDivisions.exercises.exerciseCategory.muscleGroup', 'trainingDivisions.workoutRoutines'])
             ->where('user_id', $user->id)
             ->latest()
             ->get();
@@ -29,7 +32,7 @@ class WorkoutController extends Controller
             ->get();
 
         $trainingDivisions = TrainingDivision::query()
-            ->with(['workout', 'exercises', 'workoutRoutines'])
+            ->with(['workout', 'exercises.exerciseCategory.muscleGroup', 'workoutRoutines'])
             ->whereHas('workout', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })
@@ -37,10 +40,15 @@ class WorkoutController extends Controller
             ->get();
 
         $exercises = Exercise::query()
-            ->with('trainingDivision.workout')
+            ->with(['trainingDivision.workout', 'exerciseCategory.muscleGroup'])
             ->whereHas('trainingDivision.workout', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })
+            ->orderBy('nome')
+            ->get();
+
+        $exerciseCategories = ExerciseCategory::query()
+            ->with('muscleGroup')
             ->orderBy('nome')
             ->get();
 
@@ -71,14 +79,60 @@ class WorkoutController extends Controller
             })
             ->values();
 
+        $workoutLogs = WorkoutLog::query()
+            ->with(['trainingDivision.workout', 'exercises'])
+            ->where('user_id', $user->id)
+            ->latest('data_treino')
+            ->latest()
+            ->take(10)
+            ->get();
+
+        $exercisesByDivision = $trainingDivisions
+            ->map(fn (TrainingDivision $division) => [
+                'label' => $division->nome,
+                'total' => $division->exercises->count(),
+            ])
+            ->values();
+
+        $volumeByMuscleGroup = $exercises
+            ->groupBy(fn (Exercise $exercise) => data_get($exercise, 'exerciseCategory.muscleGroup.nome', 'Sem grupo'))
+            ->map(fn ($items, $label) => [
+                'label' => $label,
+                'total' => $items->sum(function (Exercise $exercise) {
+                    return (int) ($exercise->series ?? 0) * (int) ($exercise->repeticoes ?? 0);
+                }),
+            ])
+            ->sortByDesc('total')
+            ->values();
+
+        $progressTimeline = $workoutProgress
+            ->sortBy('data_registro')
+            ->map(fn (WorkoutProgress $progress) => [
+                'label' => \Carbon\Carbon::parse($progress->data_registro)->format('d/m'),
+                'peso' => $progress->peso ? (float) $progress->peso : null,
+                'meta_kcal' => $progress->meta_kcal ? (int) $progress->meta_kcal : null,
+            ])
+            ->values();
+
         return view('workout.index', [
             'user' => $user,
             'workouts' => $workouts,
             'workoutProgress' => $workoutProgress,
             'trainingDivisions' => $trainingDivisions,
             'exercises' => $exercises,
+            'exerciseCategories' => $exerciseCategories,
             'workoutRoutines' => $workoutRoutines,
+            'workoutLogs' => $workoutLogs,
             'latestProgress' => $workoutProgress->first(),
+            'workoutChartData' => [
+                'divisionLabels' => $exercisesByDivision->pluck('label'),
+                'divisionSeries' => $exercisesByDivision->pluck('total'),
+                'muscleLabels' => $volumeByMuscleGroup->pluck('label'),
+                'muscleSeries' => $volumeByMuscleGroup->pluck('total'),
+                'progressLabels' => $progressTimeline->pluck('label'),
+                'weightSeries' => $progressTimeline->pluck('peso'),
+                'kcalSeries' => $progressTimeline->pluck('meta_kcal'),
+            ],
         ]);
     }
 
@@ -273,11 +327,52 @@ class WorkoutController extends Controller
         return back()->with('status', 'Rotina excluída com sucesso.');
     }
 
+    public function storeCheckin(Request $request)
+    {
+        $validator = Validator::make($request->all(), $this->checkinRules($request), $this->messages());
+
+        if ($validator->fails()) {
+            return $this->backWithWorkoutErrors($validator, 'modal_registrar_treino');
+        }
+
+        $validated = $validator->validated();
+        $division = TrainingDivision::query()
+            ->with(['workout', 'exercises'])
+            ->findOrFail($validated['training_division_id']);
+
+        $this->authorizeDivision($request, $division);
+
+        $log = WorkoutLog::create([
+            'user_id' => $request->user()->id,
+            'training_division_id' => $division->id,
+            'data_treino' => $validated['data_treino'],
+            'nome_treino' => data_get($division, 'workout.nome') . ' - ' . $division->nome,
+            'dia_semana' => $validated['dia_semana'] ?? null,
+            'sensacao_esforco' => $validated['sensacao_esforco'] ?? null,
+            'observacao' => $validated['observacao'] ?? null,
+        ]);
+
+        foreach ($division->exercises as $exercise) {
+            WorkoutLogExercise::create([
+                'workout_log_id' => $log->id,
+                'exercise_id' => $exercise->id,
+                'nome_exercicio' => $exercise->nome,
+                'series' => $validated['series'] ?? $exercise->series,
+                'repeticoes' => $validated['repeticoes'] ?? $exercise->repeticoes,
+                'carga' => $validated['carga'] ?? $exercise->carga,
+                'observacao' => $validated['observacao'] ?? null,
+            ]);
+        }
+
+        return back()->with('status', 'Treino de hoje registrado com sucesso.');
+    }
+
     private function workoutRules(): array
     {
         return [
             'nome' => ['required', 'string', 'max:255'],
             'objetivo' => ['nullable', 'string', 'max:255'],
+            'status' => ['required', 'in:ativo,pausado,finalizado'],
         ];
     }
 
@@ -320,6 +415,7 @@ class WorkoutController extends Controller
                     $query->whereIn('workout_id', $userWorkoutIds);
                 }),
             ],
+            'exercise_category_id' => ['nullable', 'exists:exercise_categories,id'],
             'nome' => ['required', 'string', 'max:255'],
             'series' => ['nullable', 'integer', 'min:1'],
             'repeticoes' => ['nullable', 'integer', 'min:1'],
@@ -343,6 +439,29 @@ class WorkoutController extends Controller
                 }),
             ],
             'dia_semana' => ['required', 'string', 'max:50'],
+        ];
+    }
+
+    private function checkinRules(Request $request): array
+    {
+        $userWorkoutIds = Workout::query()
+            ->where('user_id', $request->user()->id)
+            ->pluck('id');
+
+        return [
+            'training_division_id' => [
+                'required',
+                Rule::exists('training_divisions', 'id')->where(function ($query) use ($userWorkoutIds) {
+                    $query->whereIn('workout_id', $userWorkoutIds);
+                }),
+            ],
+            'data_treino' => ['required', 'date'],
+            'dia_semana' => ['nullable', 'string', 'max:50'],
+            'series' => ['nullable', 'integer', 'min:1'],
+            'repeticoes' => ['nullable', 'integer', 'min:1'],
+            'carga' => ['nullable', 'numeric', 'min:0'],
+            'sensacao_esforco' => ['nullable', 'integer', 'between:1,10'],
+            'observacao' => ['nullable', 'string'],
         ];
     }
 

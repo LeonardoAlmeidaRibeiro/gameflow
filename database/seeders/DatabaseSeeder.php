@@ -25,12 +25,15 @@ class DatabaseSeeder extends Seeder
             'cpf' => '12345678900',
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
-            'photo' => 'assets/imagens/teste.gif',
+            'photo' => 'assets/imagens/avatar.png',
             'phone' => '(11) 99999-0000',
         ]);
 
         $this->call([
             CategoriaSeeder::class,
+            GrupoMuscularSeeder::class,
+            ExerciseCategorySeeder::class,
+            WorkoutSeeder::class,
         ]);
 
         $this->seedTestUserFinanceData($user);

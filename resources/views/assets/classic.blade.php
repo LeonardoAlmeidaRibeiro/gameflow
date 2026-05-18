@@ -29,8 +29,7 @@ License: For each use you must have a valid license purchased only from above li
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 		<!--end::Fonts-->
 		<!--begin::Vendor Stylesheets(used by this page)-->
-		<link href="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
-		<link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('assets/css/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 		<!--end::Vendor Stylesheets-->
 		<!--begin::Global Stylesheets Bundle(used by all pages)-->
 		<link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
@@ -16196,16 +16195,11 @@ License: For each use you must have a valid license purchased only from above li
 		<script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
 		<!--end::Global Javascript Bundle-->
 		<!--begin::Vendors Javascript(used by this page)-->
-		<script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
-		<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+		<script src="{{ asset('assets/js/datatables.bundle.js') }}"></script>
 		<!--end::Vendors Javascript-->
 		<!--begin::Custom Javascript(used by this page)-->
-		<script src="{{ asset('assets/js/widgets.bundle.js') }}"></script>
 		<script src="{{ asset('assets/js/custom/widgets.js') }}"></script>
-		<script src="{{ asset('assets/js/custom/apps/chat/chat.js') }}"></script>
-		<script src="{{ asset('assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
-		<script src="{{ asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
-		<script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
+		<script src="{{ asset('assets/js/custom/chat.js') }}"></script>
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
 	</body>

@@ -19,8 +19,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
     <!--end::Fonts-->
     <!--begin::Vendor Stylesheets(used by this page)-->
-    <link href="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
     <!--end::Vendor Stylesheets-->
     <!--begin::Global Stylesheets Bundle(used by all pages)-->
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
@@ -390,6 +389,48 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="row g-5 g-xl-10 mt-0">
+                                    <div class="col-xl-4">
+                                        <div class="card card-flush h-xl-100">
+                                            <div class="card-header py-5">
+                                                <h3 class="card-title align-items-start flex-column">
+                                                    <span class="card-label fw-bold text-dark">Exercícios por divisão</span>
+                                                    <span class="text-gray-400 mt-1 fw-semibold fs-6">Distribuição do treino atual</span>
+                                                </h3>
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div id="home_workout_division_chart" style="height: 320px"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <div class="card card-flush h-xl-100">
+                                            <div class="card-header py-5">
+                                                <h3 class="card-title align-items-start flex-column">
+                                                    <span class="card-label fw-bold text-dark">Volume muscular</span>
+                                                    <span class="text-gray-400 mt-1 fw-semibold fs-6">Séries x repetições por grupo</span>
+                                                </h3>
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div id="home_workout_muscle_chart" style="height: 320px"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <div class="card card-flush h-xl-100">
+                                            <div class="card-header py-5">
+                                                <h3 class="card-title align-items-start flex-column">
+                                                    <span class="card-label fw-bold text-dark">Evolução corporal</span>
+                                                    <span class="text-gray-400 mt-1 fw-semibold fs-6">Peso e meta calórica</span>
+                                                </h3>
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div id="home_workout_progress_chart" style="height: 320px"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <!--end::Content container-->
                         </div>
@@ -420,19 +461,28 @@
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
     <!--end::Global Javascript Bundle-->
     <!--begin::Vendors Javascript(used by this page)-->
-    <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
-    <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+    <script src="{{ asset('assets/js/datatables.bundle.js') }}"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used by this page)-->
-    <script src="{{ asset('assets/js/widgets.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/custom/widgets.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/apps/chat/chat.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/chat.js') }}"></script>
+    @php
+        $homeWorkoutChartData = $workoutChartData ?? [
+            'divisionLabels' => [],
+            'divisionSeries' => [],
+            'muscleLabels' => [],
+            'muscleSeries' => [],
+            'progressLabels' => [],
+            'weightSeries' => [],
+            'kcalSeries' => [],
+        ];
+        $financeChartJson = json_encode($financeChartData, JSON_UNESCAPED_UNICODE) ?: '{}';
+        $homeWorkoutChartJson = json_encode($homeWorkoutChartData, JSON_UNESCAPED_UNICODE) ?: '{}';
+    @endphp
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var chartData = @json($financeChartData);
+            var chartData = {!! $financeChartJson !!};
+            var workoutChartData = {!! $homeWorkoutChartJson !!};
             var currencyFormatter = new Intl.NumberFormat('pt-BR', {
                 style: 'currency',
                 currency: 'BRL'
@@ -465,6 +515,9 @@
             var monthlyChart = document.getElementById('finance_monthly_chart');
             var categoryChart = document.getElementById('finance_category_chart');
             var statusChart = document.getElementById('finance_status_chart');
+            var workoutDivisionChart = document.getElementById('home_workout_division_chart');
+            var workoutMuscleChart = document.getElementById('home_workout_muscle_chart');
+            var workoutProgressChart = document.getElementById('home_workout_progress_chart');
 
             if (monthlyChart && window.ApexCharts) {
                 new ApexCharts(monthlyChart, {
@@ -574,6 +627,68 @@
                             }
                         }
                     }
+                }).render();
+            }
+
+            if (workoutDivisionChart && window.ApexCharts) {
+                new ApexCharts(workoutDivisionChart, {
+                    chart: { fontFamily: 'inherit', type: 'bar', height: 320, toolbar: { show: false } },
+                    series: [{
+                        name: 'Exercícios',
+                        data: workoutChartData.divisionSeries.length ? workoutChartData.divisionSeries : [0]
+                    }],
+                    xaxis: {
+                        categories: workoutChartData.divisionLabels.length ? workoutChartData.divisionLabels : ['Sem dados'],
+                        labels: { rotate: -20, style: { colors: '#a1a5b7', fontSize: '12px' } }
+                    },
+                    yaxis: { min: 0, forceNiceScale: true, labels: { style: { colors: '#a1a5b7', fontSize: '12px' } } },
+                    colors: ['#009ef7'],
+                    plotOptions: { bar: { borderRadius: 4, columnWidth: '48%' } },
+                    dataLabels: { enabled: false },
+                    grid: { borderColor: '#eff2f5', strokeDashArray: 4 }
+                }).render();
+            }
+
+            if (workoutMuscleChart && window.ApexCharts) {
+                var muscleData = normalizedDonut(workoutChartData.muscleLabels, workoutChartData.muscleSeries);
+
+                new ApexCharts(workoutMuscleChart, {
+                    series: muscleData.series,
+                    chart: { fontFamily: 'inherit', type: 'donut', height: 320 },
+                    labels: muscleData.labels,
+                    colors: ['#50cd89', '#f1416c', '#ffc700', '#7239ea', '#009ef7', '#7e8299', '#181c32'],
+                    legend: { position: 'bottom' },
+                    dataLabels: { enabled: false },
+                    tooltip: {
+                        y: {
+                            formatter: function(value) {
+                                return muscleData.labels.length === 1 && muscleData.labels[0] === 'Sem dados' ? 'Sem dados' : Number(value || 0) + ' reps';
+                            }
+                        }
+                    }
+                }).render();
+            }
+
+            if (workoutProgressChart && window.ApexCharts) {
+                new ApexCharts(workoutProgressChart, {
+                    chart: { fontFamily: 'inherit', type: 'line', height: 320, toolbar: { show: false } },
+                    series: [
+                        { name: 'Peso', data: workoutChartData.weightSeries.length ? workoutChartData.weightSeries : [0] },
+                        { name: 'Meta kcal', data: workoutChartData.kcalSeries.length ? workoutChartData.kcalSeries : [0] }
+                    ],
+                    xaxis: {
+                        categories: workoutChartData.progressLabels.length ? workoutChartData.progressLabels : ['Sem dados'],
+                        labels: { style: { colors: '#a1a5b7', fontSize: '12px' } }
+                    },
+                    yaxis: [
+                        { title: { text: 'Peso' }, forceNiceScale: true, labels: { style: { colors: '#a1a5b7', fontSize: '12px' } } },
+                        { opposite: true, title: { text: 'Kcal' }, forceNiceScale: true, labels: { style: { colors: '#a1a5b7', fontSize: '12px' } } }
+                    ],
+                    colors: ['#f1416c', '#009ef7'],
+                    stroke: { curve: 'smooth', width: 3 },
+                    markers: { size: 4 },
+                    dataLabels: { enabled: false },
+                    grid: { borderColor: '#eff2f5', strokeDashArray: 4 }
                 }).render();
             }
         });
