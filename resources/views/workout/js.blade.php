@@ -12,9 +12,7 @@
                 return;
             }
 
-            var chartData = {
-                !!$workoutChartJson!!
-            };
+            var chartData = {!! $workoutChartJson !!};
             var emptyLabel = ['Sem dados'];
 
             var divisionElement = document.getElementById('workout_division_chart');
@@ -132,7 +130,7 @@
                     return;
                 }
 
-                var value = data[key] ? ? '';
+                var value = data[key] || '';
 
                 if (field.type === 'date' && String(value).indexOf('T') !== -1) {
                     value = String(value).split('T')[0];
@@ -295,9 +293,10 @@
             });
 
             document.querySelectorAll('.js-edit-progress').forEach(function(button) {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
                     var data = JSON.parse(button.getAttribute('data-progress'));
-                    openWorkoutEditModal('form_editar_progress', 'modal_editar_progress', data.id, data);
+                    abrirModalEditarTreinoProgresso(data);
                 });
             });
         });

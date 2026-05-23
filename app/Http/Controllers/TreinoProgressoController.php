@@ -47,4 +47,26 @@ class TreinoProgressoController extends Controller
             return $mensagem->mensagemErro($e->getMessage());
         }
     }
+
+    function update(TreinoProgressoValidator $request, $id)
+    {
+
+        try {
+
+            $mensagem   = new MensagemController;
+            $validator  = $request->validated();
+            $categoria      = WorkoutProgress::find($id);
+
+            if ($categoria) {
+                $categoria->update($validator);
+
+                return $mensagem->sucessoUpdate($categoria->id);
+            } else {
+                return $mensagem->naoLocalizado();
+            }
+        } catch (Exception $e) {
+
+            return $mensagem->mensagemErro($e->getMessage());
+        }
+    }
 }

@@ -638,7 +638,7 @@
                                             <div class="card-header border-0">
                                                 <h3 class="card-title fw-bold text-dark">Progresso atual</h3>
                                                 <div class="card-toolbar">
-                                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal_adicionar_progress">Adicionar</button>
+                                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal_cadastro_progresso">Adicionar</button>
                                                 </div>
                                             </div>
                                             <div class="card-body pt-0">
@@ -1166,18 +1166,18 @@
                                                 <tbody>
                                                     @forelse ($workoutProgress as $progress)
                                                     <tr>
-                                                        <td class="fw-semibold text-dark"> <a href="#" onClick="return abrirModalEditar({{ $progress->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar"> Registro {{ $loop->iteration }}</a></td>
-                                                        <td> <a href="#" onClick="return abrirModalEditar({{ $progress->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar">{{ \Carbon\Carbon::parse($progress->data_registro)->format('d/m/Y') }} </a></td>
-                                                        <td> <a href="#" onClick="return abrirModalEditar({{ $progress->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar">{{ $progress->idade ?? '-' }}</a></td>
-                                                        <td> <a href="#" onClick="return abrirModalEditar({{ $progress->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar">{{ $progress->peso ? number_format($progress->peso, 2, ',', '.') : '-' }} Kg</a></td>
-                                                        <td> <a href="#" onClick="return abrirModalEditar({{ $progress->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar">{{ $progress->altura ? number_format($progress->altura * 100, 0, ',', '.') : '-' }} cm</a></td>
-                                                        <td> <a href="#" onClick="return abrirModalEditar({{ $progress->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar">{{ $progress->meta_kcal ?? '-' }}</a></td>
-                                                        <td> <a href="#" onClick="return abrirModalEditar({{ $progress->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar">{{ $progress->meta_necessaria ?? '-' }}</a></td>
-                                                        <td> <a href="#" onClick="return abrirModalEditar({{ $progress->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar">{{ $progress->carboidrato ?? '-' }}</a></td>
-                                                        <td> <a href="#" onClick="return abrirModalEditar({{ $progress->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar">{{ $progress->proteina ?? '-' }}</a></td>
-                                                        <td> <a href="#" onClick="return abrirModalEditar({{ $progress->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar">{{ $progress->gordura ?? '-' }}</a></td>
+                                                        <td class="fw-semibold text-dark"> <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6 js-edit-progress" data-progress='@json($progress)'> Registro {{ $loop->iteration }}</a></td>
+                                                        <td> <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6 js-edit-progress" data-progress='@json($progress)'>{{ \Carbon\Carbon::parse($progress->data_registro)->format('d/m/Y') }} </a></td>
+                                                        <td> <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6 js-edit-progress" data-progress='@json($progress)'>{{ $progress->idade ?? '-' }}</a></td>
+                                                        <td> <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6 js-edit-progress" data-progress='@json($progress)'>{{ $progress->peso ? number_format($progress->peso, 2, ',', '.') : '-' }} Kg</a></td>
+                                                        <td> <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6 js-edit-progress" data-progress='@json($progress)'>{{ $progress->altura ? number_format($progress->altura * 100, 0, ',', '.') : '-' }} cm</a></td>
+                                                        <td> <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6 js-edit-progress" data-progress='@json($progress)'>{{ $progress->meta_kcal ?? '-' }}</a></td>
+                                                        <td> <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6 js-edit-progress" data-progress='@json($progress)'>{{ $progress->meta_necessaria ?? '-' }}</a></td>
+                                                        <td> <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6 js-edit-progress" data-progress='@json($progress)'>{{ $progress->carboidrato ?? '-' }}</a></td>
+                                                        <td> <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6 js-edit-progress" data-progress='@json($progress)'>{{ $progress->proteina ?? '-' }}</a></td>
+                                                        <td> <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6 js-edit-progress" data-progress='@json($progress)'>{{ $progress->gordura ?? '-' }}</a></td>
                                                         <td>
-                                                            <button type="button" class="btn btn-sm btn-light-primary me-2 js-edit-progress" data-progress='@json($progress)'>
+                                                            <a href="#" class="btn btn-sm btn-light-primary js-edit-progress" data-progress='@json($progress)'>
                                                                 <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
                                                                 <span class="svg-icon svg-icon-2">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -1185,9 +1185,10 @@
                                                                         <path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="black" />
                                                                     </svg>
                                                                 </span>
-                                                                <!--end::Svg Icon-->Editar</button>
+                                                                <!--end::Svg Icon-->Editar
+                                                            </a>
 
-                                                            <button type="button" class="btn btn-sm btn-light-danger" onClick="return excluir('{{ $progress->id }}');">
+                                                            <button type="button" class="btn btn-sm btn-light-danger" onClick="return excluirTreinoProgresso('{{ $progress->id }}');">
                                                                 <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
                                                                 <span class="svg-icon svg-icon-2">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -1242,6 +1243,7 @@
     <!--end::App-->
     <!--begin::Drawers-->
     @include('workout.progresso.criar')
+    @include('workout.progresso.editar')
     @include('workout.progresso.js')
     @include('workout.modals')
 

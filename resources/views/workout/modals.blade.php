@@ -1,6 +1,5 @@
 @php
     $workoutActionTemplate = route('workouts.update', ['workout' => '__ID__']);
-    $progressActionTemplate = route('workouts.progress.update', ['progress' => '__ID__']);
     $divisionActionTemplate = route('workouts.divisions.update', ['division' => '__ID__']);
     $exerciseActionTemplate = route('workouts.exercises.update', ['exercise' => '__ID__']);
     $routineActionTemplate = route('workouts.routines.update', ['routine' => '__ID__']);
@@ -249,45 +248,6 @@
             </div>
             <div class="modal-body">
                 @include('workout.partials.routine-fields')
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary">Salvar</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div class="modal fade" id="modal_adicionar_progress" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <form class="modal-content js-workout-form" method="POST" action="{{ route('workouts.progress.store') }}">
-            @csrf
-            <div class="modal-header">
-                <h2 class="fw-bold">Adicionar progresso</h2>
-                <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" data-bs-dismiss="modal">x</button>
-            </div>
-            <div class="modal-body">
-                @include('workout.partials.progress-fields')
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary">Salvar</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div class="modal fade" id="modal_editar_progress" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <form id="form_editar_progress" class="modal-content js-workout-form" method="POST" data-action-template="{{ $progressActionTemplate }}">
-            @csrf
-            @method('PUT')
-            <div class="modal-header">
-                <h2 class="fw-bold">Editar progresso</h2>
-                <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" data-bs-dismiss="modal">x</button>
-            </div>
-            <div class="modal-body">
-                @include('workout.partials.progress-fields')
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>

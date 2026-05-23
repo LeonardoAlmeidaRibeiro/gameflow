@@ -77,5 +77,6 @@ Route::middleware('auth')->group(function () {
 
     // Treino Progresso
     Route::post('/treino/progresso', [TreinoProgressoController::class, 'store'])->name('treino.progresso.store');
+    Route::put('/treino/progresso/{id}', [TreinoProgressoController::class, 'update'])->name('treino.progresso.update');
     Route::delete('/treino/progresso/{id}', [TreinoProgressoController::class, 'destroy'])->name('treino.progresso.destroy');
 });

@@ -1,5 +1,5 @@
 <!--begin::Modal - Progresso-->
-<div class="modal fade" id="modal_cadastro_progresso" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modal_editar_progresso" tabindex="-1" aria-hidden="true">
     <!--begin::Modal dialog-->
     <div class="modal-dialog modal-dialog-centered mw-650px">
         <!--begin::Modal content-->
@@ -7,7 +7,7 @@
             <!--begin::Modal header-->
             <div class="modal-header">
                 <!--begin::Modal title-->
-                <h2>Adicionar Novo Progresso</h2>
+                <h2>Editar Progresso</h2>
                 <!--end::Modal title-->
                 <!--begin::Close-->
                 <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
@@ -31,44 +31,47 @@
                     @csrf
                     <!--begin::Input group-->
                     <div class="row g-5">
-                        <div class="col-md-12">
-                            <input type="hidden" id="user_id" name="user_id" value="{{ auth()->id() }}">
+                        <div class="col-md-6">
+                            <input type="hidden" id="id_edit" name="id_edit" value="">
+                        </div>
+                         <div class="col-md-6">
+                            <input type="hidden" id="user_id_edit" name="user_id_edit" value="{{ auth()->id() }}">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label required">Data</label>
-                            <input type="date" id="data_registro" name="data_registro" class="form-control" data-label="Data">
+                            <input type="date" id="data_registro_edit" name="data_registro_edit" class="form-control" data-label="Data">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Idade</label>
-                            <input type="number" id="idade" name="idade" class="form-control" min="1">
+                            <input type="number" id="idade_edit" name="idade_edit" class="form-control" min="1">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Peso</label>
-                            <input type="number" id="peso" name="peso" class="form-control" min="1" step="0.01">
+                            <input type="number" id="peso_edit" name="peso_edit" class="form-control" min="1" step="0.01">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Altura</label>
-                            <input type="text" id="altura" name="altura" class="form-control" inputmode="decimal" pattern="[0-9]+([\.,][0-9]+)?" placeholder="1.70">
+                            <input type="number" id="altura_edit" name="altura_edit" class="form-control" min="0.5" step="0.01">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Meta kcal</label>
-                            <input type="number" id="meta_kcal" name="meta_kcal" class="form-control" min="1">
+                            <input type="number" id="meta_kcal_edit" name="meta_kcal_edit" class="form-control" min="1">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Meta necessária</label>
-                            <input type="number" id="meta_necessaria" name="meta_necessaria" class="form-control" min="1">
+                            <input type="number" id="meta_necessaria_edit" name="meta_necessaria_edit" class="form-control" min="1">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Carboidrato</label>
-                            <input type="number" id="carboidrato" name="carboidrato" class="form-control" min="0" step="0.01">
+                            <input type="number" id="carboidrato_edit" name="carboidrato_edit" class="form-control" min="0" step="0.01">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Proteína</label>
-                            <input type="number" id="proteina" name="proteina" class="form-control" min="0" step="0.01">
+                            <input type="number" id="proteina_edit" name="proteina_edit" class="form-control" min="0" step="0.01">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Gordura</label>
-                            <input type="number" id="gordura"   name="gordura" class="form-control" min="0" step="0.01">
+                            <input type="number" id="gordura_edit"   name="gordura_edit" class="form-control" min="0" step="0.01">
                         </div>
                     </div>
 
@@ -86,7 +89,7 @@
                             <!--end::Svg Icon-->
                             Cancelar
                         </button>
-                        <button type="button" id="salvar" class="btn btn-primary" onClick="executarModalCriarTreinoProgresso()">
+                        <button type="button" id="salvar" class="btn btn-primary" onClick="executarModalEditarTreinoProgresso()">
                             <!--begin::Svg Icon | path: assets/media/icons/duotune/general/gen043.svg-->
                             <span class="svg-icon svg-icon-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
