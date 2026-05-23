@@ -1166,7 +1166,7 @@
                                                 <tbody>
                                                     @forelse ($workoutProgress as $progress)
                                                     <tr>
-                                                        <td class="fw-semibold text-dark"> <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6 js-edit-progress" data-progress='@json($progress)'> Registro {{ $loop->iteration }}</a></td>
+                                                        <td class="fw-semibold text-dark"> <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6 js-edit-progress" data-progress='@json($progress)'> Registro {{ method_exists($workoutProgress, 'firstItem') ? $workoutProgress->firstItem() + $loop->index : $loop->iteration }}</a></td>
                                                         <td> <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6 js-edit-progress" data-progress='@json($progress)'>{{ \Carbon\Carbon::parse($progress->data_registro)->format('d/m/Y') }} </a></td>
                                                         <td> <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6 js-edit-progress" data-progress='@json($progress)'>{{ $progress->idade ?? '-' }}</a></td>
                                                         <td> <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6 js-edit-progress" data-progress='@json($progress)'>{{ $progress->peso ? number_format($progress->peso, 2, ',', '.') : '-' }} Kg</a></td>
@@ -1219,6 +1219,32 @@
 
                                             </table>
                                         </div>
+                                        @if (method_exists($workoutProgress, 'hasPages'))
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <div class="fs-6" colspan="5">@php echo "Total de ".$workoutProgress->total()." registro(s)." @endphp</div>
+                                            <nav aria-label="Page navigation example">
+                                                <ul class="pagination">
+                                                    <li class="page-item {{ $workoutProgress->onFirstPage() ? 'disabled' : '' }}">
+                                                        <a class="page-link" href="{{ $workoutProgress->previousPageUrl() ?: '#' }}" aria-label="Previous">
+                                                            <span aria-hidden="true">&laquo;</span>
+                                                        </a>
+                                                    </li>
+
+                                                    @for ($page = 1; $page <= $workoutProgress->lastPage(); $page++)
+                                                        <li class="page-item {{ $page == $workoutProgress->currentPage() ? 'active' : '' }}">
+                                                            <a class="page-link" href="{{ $workoutProgress->appends(request()->query())->url($page) }}">{{ $page }}</a>
+                                                        </li>
+                                                    @endfor
+
+                                                    <li class="page-item {{ $workoutProgress->hasMorePages() ? '' : 'disabled' }}">
+                                                        <a class="page-link" href="{{ $workoutProgress->nextPageUrl() ?: '#' }}" aria-label="Next">
+                                                            <span aria-hidden="true">&raquo;</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                        @endif
                                     </div>
                                 </div>
 

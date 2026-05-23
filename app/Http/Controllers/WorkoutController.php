@@ -26,10 +26,16 @@ class WorkoutController extends Controller
             ->latest()
             ->get();
 
-        $workoutProgress = WorkoutProgress::query()
+        $allWorkoutProgress = WorkoutProgress::query()
             ->where('user_id', $user->id)
             ->latest('data_registro')
             ->get();
+
+        $workoutProgress = WorkoutProgress::query()
+            ->where('user_id', $user->id)
+            ->latest('data_registro')
+            ->paginate(5, ['*'], 'progress_page')
+            ->withQueryString();
 
         $trainingDivisions = TrainingDivision::query()
             ->with(['workout', 'exercises.exerciseCategory.muscleGroup', 'workoutRoutines'])
@@ -105,7 +111,7 @@ class WorkoutController extends Controller
             ->sortByDesc('total')
             ->values();
 
-        $progressTimeline = $workoutProgress
+        $progressTimeline = $allWorkoutProgress
             ->sortBy('data_registro')
             ->map(fn (WorkoutProgress $progress) => [
                 'label' => \Carbon\Carbon::parse($progress->data_registro)->format('d/m'),
@@ -123,7 +129,7 @@ class WorkoutController extends Controller
             'exerciseCategories' => $exerciseCategories,
             'workoutRoutines' => $workoutRoutines,
             'workoutLogs' => $workoutLogs,
-            'latestProgress' => $workoutProgress->first(),
+            'latestProgress' => $allWorkoutProgress->first(),
             'workoutChartData' => [
                 'divisionLabels' => $exercisesByDivision->pluck('label'),
                 'divisionSeries' => $exercisesByDivision->pluck('total'),
