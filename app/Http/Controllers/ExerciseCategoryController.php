@@ -165,7 +165,7 @@ class ExerciseCategoryController extends Controller
             'nome' => $exerciseCategory->nome,
             'descricao' => $exerciseCategory->descricao,
             'imagem' => $exerciseCategory->imagem,
-            'imagem_url' => $exerciseCategory->imagem ? asset('storage/' . $exerciseCategory->imagem) : null,
+            'imagem_url' => $exerciseCategory->imagem_url,
         ];
     }
 }

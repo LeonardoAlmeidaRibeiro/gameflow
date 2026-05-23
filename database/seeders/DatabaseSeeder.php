@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             'cpf' => '12345678900',
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
-            'photo' => 'assets/imagens/avatar.png',
+            'photo' => 'images/teste.gif',
             'phone' => '(11) 99999-0000',
         ]);
 

@@ -319,7 +319,7 @@
                                                         <tr id="tr_{{ $category->id }}">
                                                             <td id="celula_imagem_{{ $category->id }}">
                                                                 @if ($category->imagem)
-                                                                    <img src="{{ asset('storage/' . $category->imagem) }}" class="rounded" width="46" height="46" style="object-fit: cover;" alt="{{ $category->nome }}">
+                                                                    <img src="{{ $category->imagem_url }}" class="rounded" width="46" height="46" style="object-fit: cover;" alt="{{ $category->nome }}">
                                                                 @else
                                                                     <span class="badge badge-light">Sem imagem</span>
                                                                 @endif
@@ -332,7 +332,7 @@
                                                                 <button type="button" class="btn btn-sm btn-light-danger" onClick="return excluir('{{ $category->id }}');">Excluir</button>
                                                             </td>
                                                             <input type="hidden" id="celula_muscle_group_id_{{ $category->id }}" value="{{ $category->muscle_group_id }}">
-                                                            <input type="hidden" id="celula_imagem_url_{{ $category->id }}" value="{{ $category->imagem ? asset('storage/' . $category->imagem) : '' }}">
+                                                            <input type="hidden" id="celula_imagem_url_{{ $category->id }}" value="{{ $category->imagem_url ?: '' }}">
                                                         </tr>
                                                         @endforeach
                                                     </tbody>

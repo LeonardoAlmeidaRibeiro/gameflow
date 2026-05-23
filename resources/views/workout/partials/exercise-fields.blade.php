@@ -18,7 +18,7 @@
                     data-name="{{ $category->nome }}"
                     data-group="{{ data_get($category, 'muscleGroup.nome', 'Sem grupo') }}"
                     data-description="{{ $category->descricao }}"
-                    data-image="{{ $category->imagem ? asset('storage/' . $category->imagem) : '' }}">
+                    data-image="{{ $category->imagem_url ?: '' }}">
                     {{ $category->nome }} - {{ data_get($category, 'muscleGroup.nome', 'Sem grupo') }}
                 </option>
             @endforeach

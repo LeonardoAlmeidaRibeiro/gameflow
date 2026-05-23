@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/muscle-group/{muscleGroup}', [MuscleGroupController::class, 'update'])->name('muscle-group.update');
     Route::delete('/muscle-group/{muscleGroup}', [MuscleGroupController::class, 'destroy'])->name('muscle-group.destroy');
 
+    //Categorias de Exercícios
     Route::get('/exercise_categories', [ExerciseCategoryController::class, 'index'])->name('exercise_categories.index');
     Route::post('/exercise_categories', [ExerciseCategoryController::class, 'store'])->name('exercise_categories.store');
     Route::put('/exercise_categories/{exerciseCategory}', [ExerciseCategoryController::class, 'update'])->name('exercise_categories.update');

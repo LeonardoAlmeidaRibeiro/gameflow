@@ -353,11 +353,11 @@
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/pages/user-profile/campaigns.html">
+												<a class="menu-link" href="{{route('workouts.index')}}">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">Campaigns</span>
+													<span class="menu-title">Treino</span>
 												</a>
 												<!--end:Menu link-->
 											</div>

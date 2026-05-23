@@ -633,15 +633,12 @@
                                 </div>
 
                                 <div class="row g-5 g-xl-8 mb-5 mb-xl-10">
-                                    <div class="col-xl-4">
+                                    <div class="col-xl-3 col-lg-6">
                                         <div class="card h-100">
-                                            <div class="card-header border-0">
-                                                <h3 class="card-title fw-bold text-dark">Progresso atual</h3>
-                                                <div class="card-toolbar">
-                                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal_cadastro_progresso">Adicionar</button>
-                                                </div>
+                                            <div class="card-header border-0 pb-0">
+                                                <h3 class="card-title fw-bold text-dark fs-5 mb-0">Progresso atual</h3>
                                             </div>
-                                            <div class="card-body pt-0">
+                                            <div class="card-body pt-4">
                                                 @if ($latestProgress)
                                                 <div class="d-flex justify-content-between border-bottom border-gray-200 py-3">
                                                     <span class="text-gray-600">Data</span>
@@ -670,68 +667,6 @@
                                                 @else
                                                 <div class="text-gray-500 fw-semibold">Nenhum progresso cadastrado.</div>
                                                 @endif
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-xl-8">
-                                        <div class="routine-board h-100">
-                                            <div class="routine-board-title">
-                                                <span class="fs-2">♻</span>
-                                                <h2>Rotinas de treino</h2>
-                                            </div>
-                                            <div class="routine-board-toolbar">
-                                                <div class="routine-board-tools" aria-hidden="true">
-                                                    <span>≡</span>
-                                                    <span>↕</span>
-                                                    <span>⚡</span>
-                                                    <span>✦</span>
-                                                    <span>⌕</span>
-                                                    <span>↗</span>
-                                                    <span>☰</span>
-                                                </div>
-                                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal_adicionar_routine">Nova</button>
-                                            </div>
-                                            <div class="routine-view-pill">
-                                                <span>▣</span>
-                                                <span>Rotina semanal</span>
-                                            </div>
-                                            <div class="routine-day-list">
-                                                @forelse ($workoutRoutines as $routine)
-                                                <div class="routine-day-row">
-                                                    <span class="routine-day-tag day-{{ $loop->index % 7 }}">{{ $routine->dia_semana }}</span>
-                                                    <span class="text-danger fs-7">▤</span>
-                                                    <span class="routine-day-division">{{ data_get($routine, 'trainingDivision.nome', '-') }}</span>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-light-primary js-edit-routine" data-routine='@json($routine)' title="Editar rotina">✎</button>
-                                                </div>
-                                                @empty
-                                                <div class="text-gray-500">+ Nova página</div>
-                                                @endforelse
-                                            </div>
-                                            <div class="routine-view-pill">
-                                                <span>▥</span>
-                                                <span>Divisão de treino</span>
-                                            </div>
-                                            <div class="routine-columns">
-                                                @forelse ($trainingDivisions as $division)
-                                                <div>
-                                                    <div class="routine-column-title">
-                                                        <span class="text-danger fs-7">▤</span>
-                                                        {{ $division->nome }}
-                                                    </div>
-                                                    @forelse ($division->exercises as $exercise)
-                                                    <div class="routine-exercise-card">
-                                                        <div class="routine-exercise-name">{{ $exercise->nome }}</div>
-                                                        <div class="routine-exercise-meta">✅ {{ $exercise->series ?? '-' }} x {{ $exercise->repeticoes ?? '-' }}{{ $exercise->carga ? ' - ' . number_format($exercise->carga, 0, ',', '.') . ' kg' : '' }}</div>
-                                                    </div>
-                                                    @empty
-                                                    <div class="routine-new-page">+ Nova página</div>
-                                                    @endforelse
-                                                    <div class="routine-new-page">+ Nova página</div>
-                                                </div>
-                                                @empty
-                                                <div class="routine-new-page">+ Novo grupo</div>
-                                                @endforelse
                                             </div>
                                         </div>
                                     </div>
@@ -798,36 +733,33 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="row g-5 g-xl-8 mb-5 mb-xl-10">
-                                    <div class="col-xl-4">
+                                    <div class="col-xl-3 col-lg-6">
                                         <div class="card h-100">
-                                            <div class="card-header border-0">
-                                                <h3 class="card-title fw-bold text-dark">Exercícios por divisão</h3>
+                                            <div class="card-header border-0 pb-0">
+                                                <h3 class="card-title fw-bold text-dark fs-5 mb-0">Exercícios por divisão</h3>
                                             </div>
-                                            <div class="card-body pt-0">
-                                                <div id="workout_division_chart" style="min-height: 280px;"></div>
+                                            <div class="card-body pt-4">
+                                                <div id="workout_division_chart" class="w-100" style="min-height: 300px;"></div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-4">
+                                    <div class="col-xl-3 col-lg-6">
                                         <div class="card h-100">
-                                            <div class="card-header border-0">
-                                                <h3 class="card-title fw-bold text-dark">Volume por grupo muscular</h3>
+                                            <div class="card-header border-0 pb-0">
+                                                <h3 class="card-title fw-bold text-dark fs-5 mb-0">Volume por grupo muscular</h3>
                                             </div>
-                                            <div class="card-body pt-0">
-                                                <div id="workout_muscle_chart" style="min-height: 280px;"></div>
+                                            <div class="card-body pt-4">
+                                                <div id="workout_muscle_chart" class="w-100" style="min-height: 300px;"></div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-4">
+                                    <div class="col-xl-3 col-lg-6">
                                         <div class="card h-100">
-                                            <div class="card-header border-0">
-                                                <h3 class="card-title fw-bold text-dark">Evolução corporal</h3>
+                                            <div class="card-header border-0 pb-0">
+                                                <h3 class="card-title fw-bold text-dark fs-5 mb-0">Evolução corporal</h3>
                                             </div>
-                                            <div class="card-body pt-0">
-                                                <div id="workout_progress_chart" style="min-height: 280px;"></div>
+                                            <div class="card-body pt-4">
+                                                <div id="workout_progress_chart" class="w-100" style="min-height: 300px;"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -1003,7 +935,7 @@
                                                             @if ($exercise->exerciseCategory)
                                                             <div class="d-flex align-items-center gap-2">
                                                                 @if ($exercise->exerciseCategory->imagem)
-                                                                <img src="{{ asset('storage/' . $exercise->exerciseCategory->imagem) }}" class="rounded" width="34" height="34" style="object-fit: cover;" alt="{{ $exercise->exerciseCategory->nome }}">
+                                                                <img src="{{ $exercise->exerciseCategory->imagem_url }}" class="rounded" width="34" height="34" style="object-fit: cover;" alt="{{ $exercise->exerciseCategory->nome }}">
                                                                 @endif
                                                                 <div>
                                                                     <div class="fw-bold text-dark">{{ $exercise->exerciseCategory->nome }}</div>

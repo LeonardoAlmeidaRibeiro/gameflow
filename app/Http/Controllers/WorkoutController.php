@@ -112,6 +112,7 @@ class WorkoutController extends Controller
             ->values();
 
         $progressTimeline = $allWorkoutProgress
+            ->take(5)
             ->sortBy('data_registro')
             ->map(fn (WorkoutProgress $progress) => [
                 'label' => \Carbon\Carbon::parse($progress->data_registro)->format('d/m'),

@@ -495,8 +495,8 @@ License: For each use you must have a valid license purchased only from above li
 																		<!--begin:Menu item-->
 																		<div class="menu-item p-0 m-0">
 																			<!--begin:Menu link-->
-																			<a href="../../demo1/dist/pages/user-profile/campaigns.html" class="menu-link">
-																				<span class="menu-title">Campaigns</span>
+																			<a href="{{route('workouts.index')}}" class="menu-link">
+																				<span class="menu-title">Treino</span>
 																			</a>
 																			<!--end:Menu link-->
 																		</div>
@@ -5209,11 +5209,11 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/pages/user-profile/campaigns.html">
+												<a class="menu-link" href="{{route('workouts.index')}}">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">Campaigns</span>
+													<span class="menu-title">Treino</span>
 												</a>
 												<!--end:Menu link-->
 											</div>
@@ -8987,7 +8987,7 @@ License: For each use you must have a valid license purchased only from above li
 																		<span class="bullet bullet-dot bg-primary me-2 h-10px w-10px"></span>
 																		<!--end::Bullet-->
 																		<!--begin::Label-->
-																		<span class="fw-bold text-gray-600 fs-6">Social Campaigns</span>
+																		<span class="fw-bold text-gray-600 fs-6">Social Treino</span>
 																		<!--end::Label-->
 																	</div>
 																	<!--ed::Item-->
@@ -9092,7 +9092,7 @@ License: For each use you must have a valid license purchased only from above li
 																		<span class="bullet bullet-dot bg-primary me-2 h-10px w-10px"></span>
 																		<!--end::Bullet-->
 																		<!--begin::Label-->
-																		<span class="fw-bold text-gray-600 fs-6">Social Campaigns</span>
+																		<span class="fw-bold text-gray-600 fs-6">Social Treino</span>
 																		<!--end::Label-->
 																	</div>
 																	<!--ed::Item-->

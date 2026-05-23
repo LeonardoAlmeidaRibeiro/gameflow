@@ -20,7 +20,7 @@
                 new ApexCharts(divisionElement, {
                     chart: {
                         type: 'bar'
-                        , height: 280
+                        , height: 300
                         , toolbar: {
                             show: false
                         }
@@ -57,7 +57,7 @@
                 new ApexCharts(muscleElement, {
                     chart: {
                         type: 'donut'
-                        , height: 280
+                        , height: 300
                     }
                     , series: chartData.muscleSeries.length ? chartData.muscleSeries : [1]
                     , labels: chartData.muscleLabels.length ? chartData.muscleLabels : emptyLabel
@@ -76,7 +76,7 @@
                 new ApexCharts(progressElement, {
                     chart: {
                         type: 'line'
-                        , height: 280
+                        , height: 300
                         , toolbar: {
                             show: false
                         }

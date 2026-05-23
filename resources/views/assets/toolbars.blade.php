@@ -448,8 +448,8 @@
 																		<!--begin:Menu item-->
 																		<div class="menu-item p-0 m-0">
 																			<!--begin:Menu link-->
-																			<a href="../../demo1/dist/pages/user-profile/campaigns.html" class="menu-link">
-																				<span class="menu-title">Campaigns</span>
+																			<a href="{{route('workouts.index')}}" class="menu-link">
+																				<span class="menu-title">Treino</span>
 																			</a>
 																			<!--end:Menu link-->
 																		</div>

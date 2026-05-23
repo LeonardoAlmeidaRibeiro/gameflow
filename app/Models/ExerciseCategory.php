@@ -13,6 +13,19 @@ class ExerciseCategory extends Model
         'imagem',
     ];
 
+    public function getImagemUrlAttribute()
+    {
+        if (!$this->imagem) {
+            return null;
+        }
+
+        if (str_starts_with($this->imagem, 'images/')) {
+            return asset($this->imagem);
+        }
+
+        return asset('storage/' . $this->imagem);
+    }
+
     public function muscleGroup()
     {
         return $this->belongsTo(MuscleGroup::class);
