@@ -11,6 +11,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:title" content="Treinos | Gameflow" />
     <meta property="og:site_name" content="Gameflow" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}" />
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
@@ -64,6 +65,244 @@
 
         .gameflow-brand .app-sidebar-logo-minimize {
             display: none;
+        }
+
+        .progress-board {
+            background: #ffffff;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .progress-board-title {
+            align-items: center;
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .progress-board-title h2 {
+            background: #d8eafb;
+            color: #1f1f29;
+            display: inline;
+            font-size: 1.85rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin: 0;
+            padding: 0 0.2rem;
+        }
+
+        .progress-board-view {
+            align-items: center;
+            background: #f3f4f6;
+            border-radius: 999px;
+            color: #1f1f29;
+            display: inline-flex;
+            font-weight: 700;
+            gap: 0.45rem;
+            margin-bottom: 0.65rem;
+            padding: 0.45rem 0.75rem;
+        }
+
+        .progress-board-toolbar {
+            align-items: center;
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-board-tools {
+            color: #7e8299;
+            display: flex;
+            font-size: 1rem;
+            gap: 0.75rem;
+        }
+
+        .progress-board-table {
+            border-collapse: collapse;
+            min-width: 1180px;
+            width: 100%;
+        }
+
+        .progress-board-table th,
+        .progress-board-table td {
+            border-bottom: 1px solid #eef0f3;
+            border-right: 1px solid #eef0f3;
+            color: #5f6368;
+            font-size: 0.9rem;
+            font-weight: 500;
+            height: 38px;
+            padding: 0.45rem 0.65rem;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        .progress-board-table th {
+            background: #ffffff;
+            color: #74777f;
+            font-weight: 600;
+        }
+
+        .progress-board-table th:last-child,
+        .progress-board-table td:last-child {
+            border-right: 0;
+        }
+
+        .progress-board-icon {
+            color: #8a8a8a;
+            display: inline-block;
+            font-weight: 700;
+            margin-right: 0.35rem;
+            min-width: 1rem;
+            text-align: center;
+        }
+
+        .progress-board-empty td {
+            color: #9aa0a6;
+            height: 72px;
+        }
+
+        .routine-board {
+            background: #ffffff;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .routine-board-title {
+            align-items: center;
+            display: flex;
+            gap: 0.6rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .routine-board-title h2 {
+            color: #1f1f29;
+            font-size: 1.85rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        .routine-board-toolbar {
+            align-items: center;
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+            margin-bottom: 0.7rem;
+        }
+
+        .routine-board-tools {
+            color: #7e8299;
+            display: flex;
+            font-size: 1rem;
+            gap: 0.75rem;
+        }
+
+        .routine-view-pill {
+            align-items: center;
+            background: #f3f4f6;
+            border-radius: 999px;
+            color: #1f1f29;
+            display: inline-flex;
+            font-weight: 700;
+            gap: 0.45rem;
+            margin-bottom: 1rem;
+            padding: 0.45rem 0.75rem;
+        }
+
+        .routine-day-list {
+            display: grid;
+            gap: 0.45rem;
+            margin-bottom: 2rem;
+            max-width: 360px;
+        }
+
+        .routine-day-row {
+            align-items: center;
+            display: flex;
+            gap: 0.55rem;
+        }
+
+        .routine-day-tag {
+            border-radius: 0.25rem;
+            color: #3f4254;
+            font-size: 0.78rem;
+            font-weight: 700;
+            min-width: 4.35rem;
+            padding: 0.15rem 0.45rem;
+            text-align: center;
+        }
+
+        .routine-day-tag.day-0 {
+            background: #ffdce8;
+        }
+
+        .routine-day-tag.day-1 {
+            background: #ffe4d6;
+        }
+
+        .routine-day-tag.day-2 {
+            background: #dff6e6;
+        }
+
+        .routine-day-tag.day-3 {
+            background: #e9e4ff;
+        }
+
+        .routine-day-tag.day-4 {
+            background: #fff1c8;
+        }
+
+        .routine-day-tag.day-5 {
+            background: #d9efff;
+        }
+
+        .routine-day-tag.day-6 {
+            background: #eeeeee;
+        }
+
+        .routine-day-division {
+            color: #111827;
+            font-weight: 700;
+        }
+
+        .routine-columns {
+            display: grid;
+            gap: 1.25rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        }
+
+        .routine-column-title {
+            color: #111827;
+            font-weight: 700;
+            margin-bottom: 0.55rem;
+        }
+
+        .routine-exercise-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.6rem;
+            margin-bottom: 0.5rem;
+            min-height: 62px;
+            padding: 0.65rem 0.75rem;
+        }
+
+        .routine-exercise-name {
+            color: #111827;
+            font-weight: 700;
+            margin-bottom: 0.45rem;
+        }
+
+        .routine-exercise-meta {
+            color: #111827;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .routine-new-page {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.6rem;
+            color: #9aa0a6;
+            padding: 0.65rem 0.75rem;
         }
 
         @media (min-width: 992px) {
@@ -436,6 +675,68 @@
                                     </div>
 
                                     <div class="col-xl-8">
+                                        <div class="routine-board h-100">
+                                            <div class="routine-board-title">
+                                                <span class="fs-2">♻</span>
+                                                <h2>Rotinas de treino</h2>
+                                            </div>
+                                            <div class="routine-board-toolbar">
+                                                <div class="routine-board-tools" aria-hidden="true">
+                                                    <span>≡</span>
+                                                    <span>↕</span>
+                                                    <span>⚡</span>
+                                                    <span>✦</span>
+                                                    <span>⌕</span>
+                                                    <span>↗</span>
+                                                    <span>☰</span>
+                                                </div>
+                                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal_adicionar_routine">Nova</button>
+                                            </div>
+                                            <div class="routine-view-pill">
+                                                <span>▣</span>
+                                                <span>Rotina semanal</span>
+                                            </div>
+                                            <div class="routine-day-list">
+                                                @forelse ($workoutRoutines as $routine)
+                                                <div class="routine-day-row">
+                                                    <span class="routine-day-tag day-{{ $loop->index % 7 }}">{{ $routine->dia_semana }}</span>
+                                                    <span class="text-danger fs-7">▤</span>
+                                                    <span class="routine-day-division">{{ data_get($routine, 'trainingDivision.nome', '-') }}</span>
+                                                    <button type="button" class="btn btn-sm btn-icon btn-light-primary js-edit-routine" data-routine='@json($routine)' title="Editar rotina">✎</button>
+                                                </div>
+                                                @empty
+                                                <div class="text-gray-500">+ Nova página</div>
+                                                @endforelse
+                                            </div>
+                                            <div class="routine-view-pill">
+                                                <span>▥</span>
+                                                <span>Divisão de treino</span>
+                                            </div>
+                                            <div class="routine-columns">
+                                                @forelse ($trainingDivisions as $division)
+                                                <div>
+                                                    <div class="routine-column-title">
+                                                        <span class="text-danger fs-7">▤</span>
+                                                        {{ $division->nome }}
+                                                    </div>
+                                                    @forelse ($division->exercises as $exercise)
+                                                    <div class="routine-exercise-card">
+                                                        <div class="routine-exercise-name">{{ $exercise->nome }}</div>
+                                                        <div class="routine-exercise-meta">✅ {{ $exercise->series ?? '-' }} x {{ $exercise->repeticoes ?? '-' }}{{ $exercise->carga ? ' - ' . number_format($exercise->carga, 0, ',', '.') . ' kg' : '' }}</div>
+                                                    </div>
+                                                    @empty
+                                                    <div class="routine-new-page">+ Nova página</div>
+                                                    @endforelse
+                                                    <div class="routine-new-page">+ Nova página</div>
+                                                </div>
+                                                @empty
+                                                <div class="routine-new-page">+ Novo grupo</div>
+                                                @endforelse
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-8 d-none">
                                         <div class="card h-100">
                                             <div class="card-header border-0">
                                                 <h3 class="card-title fw-bold text-dark">Rotina semanal</h3>
@@ -830,94 +1131,118 @@
 
                                 <div class="card mb-5 mb-xl-10">
                                     <div class="card-header border-0">
-                                        <h3 class="card-title fw-bold text-dark">Histórico de progresso</h3>
+                                        <h3 class="card-title fw-bold text-dark"><span class="card-label fw-bolder fs-3 mb-1">Progresso</span></h3>
                                         <div class="card-toolbar">
-                                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal_adicionar_progress">Adicionar</button>
+                                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal_cadastro_progresso">
+                                                <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                                                <span class="svg-icon svg-icon-2">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                        <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="black" />
+                                                        <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="black" />
+                                                    </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->Adicionar Progresso</button>
                                         </div>
                                     </div>
                                     <div class="card-body pt-0">
                                         <div class="table-responsive">
                                             <table class="table align-middle table-row-dashed gy-5">
                                                 <thead>
-                                                    <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase">
-                                                        <th>Data</th>
-                                                        <th>Idade</th>
-                                                        <th>Peso</th>
-                                                        <th>Altura</th>
-                                                        <th>Meta kcal</th>
-                                                        <th>Necessária</th>
-                                                        <th>Carboidrato</th>
-                                                        <th>Proteína</th>
-                                                        <th>Gordura</th>
-                                                        <th class="text-end">Ações</th>
+                                                    <tr class="fw-bolder text-muted bg-secondary">
+                                                        <th class="rounded-start"><span class="progress-board-icon">☑</span>Registro</th>
+                                                        <th><span class="progress-board-icon">▣</span>Data</th>
+                                                        <th><span class="progress-board-icon">#</span>Idade</th>
+                                                        <th><span class="progress-board-icon">#</span>Peso(kg)</th>
+                                                        <th><span class="progress-board-icon">#</span>Altura(cm)</th>
+                                                        <th><span class="progress-board-icon">#</span>Meta Kcal</th>
+                                                        <th><span class="progress-board-icon">Σ</span>Kcal Necessária</th>
+                                                        <th><span class="progress-board-icon">Σ</span>Carboidrato(g/kg)</th>
+                                                        <th><span class="progress-board-icon">Σ</span>Proteína(g/kg)</th>
+                                                        <th><span class="progress-board-icon">Σ</span>Gordura(g/kg)</th>
+                                                        <th class="rounded-end"></th>
                                                     </tr>
                                                 </thead>
-                                                <tbody class="fw-semibold text-gray-700">
+
+                                                <tbody>
                                                     @forelse ($workoutProgress as $progress)
                                                     <tr>
-                                                        <td>{{ \Carbon\Carbon::parse($progress->data_registro)->format('d/m/Y') }}</td>
-                                                        <td>{{ $progress->idade ?? '-' }}</td>
-                                                        <td>{{ $progress->peso ? number_format($progress->peso, 2, ',', '.') . ' kg' : '-' }}</td>
-                                                        <td>{{ $progress->altura ? number_format($progress->altura, 2, ',', '.') . ' m' : '-' }}</td>
-                                                        <td>{{ $progress->meta_kcal ?? '-' }}</td>
-                                                        <td>{{ $progress->meta_necessaria ?? '-' }}</td>
-                                                        <td>{{ $progress->carboidrato ?? '-' }}</td>
-                                                        <td>{{ $progress->proteina ?? '-' }}</td>
-                                                        <td>{{ $progress->gordura ?? '-' }}</td>
-                                                        <td class="text-end">
-                                                            <button type="button" class="btn btn-sm btn-light-primary me-2 js-edit-progress" data-progress='@json($progress)'> <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
-                                                                        <span class="svg-icon svg-icon-2">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                                                <path opacity="0.3" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="black" />
-                                                                                <path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="black" />
-                                                                            </svg>
-                                                                        </span>
-                                                                        <!--end::Svg Icon-->Editar</button>
-                                                            <form action="{{ route('workouts.progress.destroy', $progress) }}" method="POST" class="d-inline js-delete-form" data-message="Excluir este progresso?">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="btn btn-sm btn-light-danger">
-                                                                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
-                                                                    <span class="svg-icon svg-icon-2">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                                            <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="black" />
-                                                                            <path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="black" />
-                                                                            <path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="black" />
-                                                                        </svg>
-                                                                    </span>
-                                                                    <!--end::Svg Icon-->Excluir</button>
-                                                            </form>
+                                                        <td class="fw-semibold text-dark"> <a href="#" onClick="return abrirModalEditar({{ $progress->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar"> Registro {{ $loop->iteration }}</a></td>
+                                                        <td> <a href="#" onClick="return abrirModalEditar({{ $progress->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar">{{ \Carbon\Carbon::parse($progress->data_registro)->format('d/m/Y') }} </a></td>
+                                                        <td> <a href="#" onClick="return abrirModalEditar({{ $progress->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar">{{ $progress->idade ?? '-' }}</a></td>
+                                                        <td> <a href="#" onClick="return abrirModalEditar({{ $progress->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar">{{ $progress->peso ? number_format($progress->peso, 2, ',', '.') : '-' }} Kg</a></td>
+                                                        <td> <a href="#" onClick="return abrirModalEditar({{ $progress->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar">{{ $progress->altura ? number_format($progress->altura * 100, 0, ',', '.') : '-' }} cm</a></td>
+                                                        <td> <a href="#" onClick="return abrirModalEditar({{ $progress->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar">{{ $progress->meta_kcal ?? '-' }}</a></td>
+                                                        <td> <a href="#" onClick="return abrirModalEditar({{ $progress->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar">{{ $progress->meta_necessaria ?? '-' }}</a></td>
+                                                        <td> <a href="#" onClick="return abrirModalEditar({{ $progress->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar">{{ $progress->carboidrato ?? '-' }}</a></td>
+                                                        <td> <a href="#" onClick="return abrirModalEditar({{ $progress->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar">{{ $progress->proteina ?? '-' }}</a></td>
+                                                        <td> <a href="#" onClick="return abrirModalEditar({{ $progress->id }});" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6" data-bs-toggle="modal" data-bs-target="#modal_editar">{{ $progress->gordura ?? '-' }}</a></td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-sm btn-light-primary me-2 js-edit-progress" data-progress='@json($progress)'>
+                                                                <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                                                                <span class="svg-icon svg-icon-2">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                        <path opacity="0.3" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="black" />
+                                                                        <path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="black" />
+                                                                    </svg>
+                                                                </span>
+                                                                <!--end::Svg Icon-->Editar</button>
+
+                                                            <button type="button" class="btn btn-sm btn-light-danger" onClick="return excluir('{{ $progress->id }}');">
+                                                                <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                                                                <span class="svg-icon svg-icon-2">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                        <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="black" />
+                                                                        <path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="black" />
+                                                                        <path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="black" />
+                                                                    </svg>
+                                                                </span>
+                                                                <!--end::Svg Icon-->Excluir</button>
                                                         </td>
                                                     </tr>
                                                     @empty
-                                                    <tr>
-                                                        <td colspan="10" class="text-center text-gray-500 py-10">Nenhum histórico cadastrado.</td>
+                                                    <tr class="progress-board-empty">
+                                                        <td><span class="progress-board-icon">+</span>Nova página</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
                                                     </tr>
                                                     @endforelse
                                                 </tbody>
+
                                             </table>
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
-                            <!--end::Content container-->
+
                         </div>
-                        <!--end::Content-->
+                        <!--end::Content container-->
                     </div>
-                    <!--end::Content wrapper-->
-                    <!--begin::Footer-->
-                    {{-- @include('assets.footer')--}}
-                    <!--end::Footer-->
+                    <!--end::Content-->
                 </div>
-                <!--end:::Main-->
+                <!--end::Content wrapper-->
+                <!--begin::Footer-->
+                {{-- @include('assets.footer')--}}
+                <!--end::Footer-->
             </div>
-            <!--end::Wrapper-->
+            <!--end:::Main-->
         </div>
-        <!--end::Page-->
+        <!--end::Wrapper-->
+    </div>
+    <!--end::Page-->
     </div>
     <!--end::App-->
     <!--begin::Drawers-->
+    @include('workout.progresso.criar')
+    @include('workout.progresso.js')
     @include('workout.modals')
 
 
@@ -939,335 +1264,8 @@
     <!--end::Custom Javascript-->
     <!--end::Javascript-->
 
-    <script>
-        function workoutAlert(icon, title, text) {
-            Swal.fire({
-                icon: icon
-                , title: title
-                , text: text
-            });
-        }
 
-        function renderWorkoutCharts() {
-            if (typeof ApexCharts === 'undefined') {
-                return;
-            }
-
-            var chartData = {!!$workoutChartJson!!};
-            var emptyLabel = ['Sem dados'];
-
-            var divisionElement = document.getElementById('workout_division_chart');
-            if (divisionElement) {
-                new ApexCharts(divisionElement, {
-                    chart: {
-                        type: 'bar'
-                        , height: 280
-                        , toolbar: {
-                            show: false
-                        }
-                    }
-                    , series: [{
-                        name: 'Exercícios'
-                        , data: chartData.divisionSeries.length ? chartData.divisionSeries : [0]
-                    }]
-                    , xaxis: {
-                        categories: chartData.divisionLabels.length ? chartData.divisionLabels : emptyLabel
-                        , labels: {
-                            rotate: -20
-                        }
-                    }
-                    , colors: ['#009ef7']
-                    , plotOptions: {
-                        bar: {
-                            borderRadius: 4
-                            , columnWidth: '48%'
-                        }
-                    }
-                    , dataLabels: {
-                        enabled: false
-                    }
-                    , yaxis: {
-                        min: 0
-                        , forceNiceScale: true
-                    }
-                }).render();
-            }
-
-            var muscleElement = document.getElementById('workout_muscle_chart');
-            if (muscleElement) {
-                new ApexCharts(muscleElement, {
-                    chart: {
-                        type: 'donut'
-                        , height: 280
-                    }
-                    , series: chartData.muscleSeries.length ? chartData.muscleSeries : [1]
-                    , labels: chartData.muscleLabels.length ? chartData.muscleLabels : emptyLabel
-                    , colors: ['#50cd89', '#f1416c', '#ffc700', '#7239ea', '#009ef7', '#7e8299', '#181c32']
-                    , legend: {
-                        position: 'bottom'
-                    }
-                    , dataLabels: {
-                        enabled: false
-                    }
-                }).render();
-            }
-
-            var progressElement = document.getElementById('workout_progress_chart');
-            if (progressElement) {
-                new ApexCharts(progressElement, {
-                    chart: {
-                        type: 'line'
-                        , height: 280
-                        , toolbar: {
-                            show: false
-                        }
-                    }
-                    , series: [{
-                            name: 'Peso'
-                            , data: chartData.weightSeries.length ? chartData.weightSeries : [0]
-                        }
-                        , {
-                            name: 'Meta kcal'
-                            , data: chartData.kcalSeries.length ? chartData.kcalSeries : [0]
-                        }
-                    ]
-                    , xaxis: {
-                        categories: chartData.progressLabels.length ? chartData.progressLabels : emptyLabel
-                    }
-                    , colors: ['#f1416c', '#009ef7']
-                    , stroke: {
-                        curve: 'smooth'
-                        , width: 3
-                    }
-                    , markers: {
-                        size: 4
-                    }
-                    , dataLabels: {
-                        enabled: false
-                    }
-                    , yaxis: [{
-                            title: {
-                                text: 'Peso'
-                            }
-                            , forceNiceScale: true
-                        }
-                        , {
-                            opposite: true
-                            , title: {
-                                text: 'Kcal'
-                            }
-                            , forceNiceScale: true
-                        }
-                    ]
-                }).render();
-            }
-        }
-
-        function setWorkoutFormValues(form, data) {
-            Object.keys(data || {}).forEach(function(key) {
-                var field = form.querySelector('[name="' + key + '"]');
-
-                if (!field) {
-                    return;
-                }
-
-                var value = data[key] ?? '';
-
-                if (field.type === 'date' && String(value).indexOf('T') !== -1) {
-                    value = String(value).split('T')[0];
-                }
-
-                field.value = value;
-            });
-        }
-
-        function openWorkoutEditModal(formId, modalId, id, data) {
-            var form = document.getElementById(formId);
-            var modalElement = document.getElementById(modalId);
-
-            if (!form || !modalElement) {
-                return;
-            }
-
-            form.action = form.getAttribute('data-action-template').replace('__ID__', id);
-            setWorkoutFormValues(form, data);
-
-            if (window.bootstrap) {
-                new bootstrap.Modal(modalElement).show();
-            }
-        }
-
-        function updateExerciseCategoryPreview(select) {
-            var selectedOption = select.options[select.selectedIndex];
-            var form = select.closest('form');
-            var preview = form ? form.querySelector('.js-exercise-category-preview') : null;
-            var nameField = form ? form.querySelector('[name="nome"]') : null;
-            var observationField = form ? form.querySelector('[name="observacao"]') : null;
-
-            if (!selectedOption || !selectedOption.value || !preview) {
-                if (preview) {
-                    preview.classList.add('d-none');
-                }
-
-                return;
-            }
-
-            if (nameField && selectedOption.dataset.name && !String(nameField.value || '').trim()) {
-                nameField.value = selectedOption.dataset.name;
-            }
-
-            if (observationField && selectedOption.dataset.description && !String(observationField.value || '').trim()) {
-                observationField.value = selectedOption.dataset.description;
-            }
-
-            var image = preview.querySelector('.js-exercise-category-image');
-            var name = preview.querySelector('.js-exercise-category-name');
-            var group = preview.querySelector('.js-exercise-category-group');
-            var description = preview.querySelector('.js-exercise-category-description');
-
-            if (name) {
-                name.textContent = selectedOption.dataset.name || '';
-            }
-
-            if (group) {
-                group.textContent = selectedOption.dataset.group || '';
-            }
-
-            if (description) {
-                description.textContent = selectedOption.dataset.description || '';
-            }
-
-            if (image) {
-                if (selectedOption.dataset.image) {
-                    image.src = selectedOption.dataset.image;
-                    image.alt = selectedOption.dataset.name || '';
-                    image.classList.remove('d-none');
-                } else {
-                    image.removeAttribute('src');
-                    image.classList.add('d-none');
-                }
-            }
-
-            preview.classList.remove('d-none');
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            renderWorkoutCharts();
-
-            document.querySelectorAll('.js-workout-form').forEach(function(form) {
-                form.addEventListener('submit', function(event) {
-                    var requiredField = Array.from(form.querySelectorAll('[data-label]')).find(function(field) {
-                        return String(field.value || '').trim() === '';
-                    });
-
-                    if (!requiredField) {
-                        return;
-                    }
-
-                    event.preventDefault();
-                    requiredField.focus();
-                    workoutAlert('warning', 'Campo obrigatório', 'Preencha o campo ' + requiredField.getAttribute('data-label') + '.');
-                });
-            });
-
-            document.querySelectorAll('.js-exercise-category-select').forEach(function(select) {
-                select.addEventListener('change', function() {
-                    updateExerciseCategoryPreview(select);
-                });
-
-                updateExerciseCategoryPreview(select);
-            });
-
-            document.querySelectorAll('.js-delete-form').forEach(function(form) {
-                form.addEventListener('submit', function(event) {
-                    event.preventDefault();
-
-                    Swal.fire({
-                        title: 'Tem certeza que deseja excluir?'
-                        , text: form.getAttribute('data-message') || 'Não será possível reverter essa ação.'
-                        , icon: 'warning'
-                        , showCancelButton: true
-                        , confirmButtonColor: '#f1416c'
-                        , cancelButtonColor: '#7e8299'
-                        , confirmButtonText: 'Sim, excluir'
-                        , cancelButtonText: 'Cancelar'
-                    }).then(function(result) {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
-                    });
-                });
-            });
-
-            document.querySelectorAll('.js-edit-workout').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    var data = JSON.parse(button.getAttribute('data-workout'));
-                    openWorkoutEditModal('form_editar_workout', 'modal_editar_workout', data.id, data);
-                });
-            });
-
-            document.querySelectorAll('.js-edit-division').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    var data = JSON.parse(button.getAttribute('data-division'));
-                    openWorkoutEditModal('form_editar_division', 'modal_editar_division', data.id, data);
-                });
-            });
-
-            document.querySelectorAll('.js-edit-exercise').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    var data = JSON.parse(button.getAttribute('data-exercise'));
-                    openWorkoutEditModal('form_editar_exercise', 'modal_editar_exercise', data.id, data);
-                    var form = document.getElementById('form_editar_exercise');
-                    var categorySelect = form ? form.querySelector('.js-exercise-category-select') : null;
-
-                    if (categorySelect) {
-                        updateExerciseCategoryPreview(categorySelect);
-                    }
-                });
-            });
-
-            document.querySelectorAll('.js-edit-routine').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    var data = JSON.parse(button.getAttribute('data-routine'));
-                    openWorkoutEditModal('form_editar_routine', 'modal_editar_routine', data.id, data);
-                });
-            });
-
-            document.querySelectorAll('.js-edit-progress').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    var data = JSON.parse(button.getAttribute('data-progress'));
-                    openWorkoutEditModal('form_editar_progress', 'modal_editar_progress', data.id, data);
-                });
-            });
-        });
-
-    </script>
-
-    @if (session('status'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            workoutAlert('success', 'Sucesso!', @json(session('status')));
-        });
-
-    </script>
-    @endif
-
-    @if (session('workout_modal') || $errors->workout->any())
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var modalElement = document.getElementById(@json(session('workout_modal', 'modal_adicionar_workout')));
-            var firstError = @json($errors->workout->first());
-
-            if (modalElement && window.bootstrap) {
-                new bootstrap.Modal(modalElement).show();
-            }
-
-            workoutAlert('warning', 'Verifique os campos', firstError || 'Preencha os campos obrigatórios para continuar.');
-        });
-
-    </script>
-    @endif
-
+    @include('workout.js')
     @include('account.settings')
 
 </body>

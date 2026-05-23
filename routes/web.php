@@ -7,7 +7,10 @@ use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\WorkoutController;
 use App\Http\Controllers\MuscleGroupController;
-use App\Http\Controllers\ExerciseCategoryController;
+use App\Http\Controllers\{
+    ExerciseCategoryController,
+    TreinoProgressoController,
+};;
 
 
 
@@ -51,7 +54,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/workouts/{workout}', [WorkoutController::class, 'destroyWorkout'])->name('workouts.destroy');
     Route::post('/workouts/progress', [WorkoutController::class, 'storeProgress'])->name('workouts.progress.store');
     Route::put('/workouts/progress/{progress}', [WorkoutController::class, 'updateProgress'])->name('workouts.progress.update');
-    Route::delete('/workouts/progress/{progress}', [WorkoutController::class, 'destroyProgress'])->name('workouts.progress.destroy');
     Route::post('/workouts/divisions', [WorkoutController::class, 'storeDivision'])->name('workouts.divisions.store');
     Route::put('/workouts/divisions/{division}', [WorkoutController::class, 'updateDivision'])->name('workouts.divisions.update');
     Route::delete('/workouts/divisions/{division}', [WorkoutController::class, 'destroyDivision'])->name('workouts.divisions.destroy');
@@ -72,4 +74,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/exercise_categories', [ExerciseCategoryController::class, 'store'])->name('exercise_categories.store');
     Route::put('/exercise_categories/{exerciseCategory}', [ExerciseCategoryController::class, 'update'])->name('exercise_categories.update');
     Route::delete('/exercise_categories/{exerciseCategory}', [ExerciseCategoryController::class, 'destroy'])->name('exercise_categories.destroy');
+
+    // Treino Progresso
+    Route::post('/treino/progresso', [TreinoProgressoController::class, 'store'])->name('treino.progresso.store');
+    Route::delete('/treino/progresso/{id}', [TreinoProgressoController::class, 'destroy'])->name('treino.progresso.destroy');
 });
